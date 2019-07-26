@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 
 // Import React Table
@@ -10,15 +10,18 @@ import "react-table/react-table.css";
 
 // {data, isFetching} -> destructuring for props.data, props.isFetching, 
 // see https://www.robinwieruch.de/react-pass-props-to-component/#react-props-code-style
-const GenericEmikatTable = ({ users, isFetching }) => (
-    <div>
+const GenericEmikatTable = ({ users, isFetching }) => {
+
+    useEffect(() => { console.log('users:' + users + ' / isFetching: ' + isFetching) }, [users, isFetching]);
+
+    return (<div>
         <ReactTable
             data={users}
             columns={columns}
             loading={isFetching}
         />
     </div>);
-
+}
 
 const columns = [{
     Header: 'ID',
@@ -39,11 +42,11 @@ const columns = [{
 GenericEmikatTable.propTypes = {
     users: PropTypes.array.isRequired,
     isFetching: PropTypes.bool
-  };
+};
 
-  GenericEmikatTable.defaultProps = {
+GenericEmikatTable.defaultProps = {
     users: [],
     isFetching: true
-  };
+};
 
 export default GenericEmikatTable
