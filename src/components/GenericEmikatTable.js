@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 
 // Import React Table
@@ -10,6 +10,15 @@ import "react-table/react-table.css";
 
 // {data, isFetching} -> destructuring for props.data, props.isFetching, 
 // see https://www.robinwieruch.de/react-pass-props-to-component/#react-props-code-style
+
+/**
+ * A Generic Table Component that understand the 'special' JSON format of the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html).
+ * 
+ * @param {GenericEmikatTableProps} props 
+ * @version 0.1.0
+ * @author [Pascal Dihé](https://github.com/p-a-s-c-a-l)
+ * @see https://github.com/clarity-h2020/emikat/
+ */
 const GenericEmikatTable = ({ users, isFetching }) => {
 
     //useEffect(() => { console.log('users:' + users + ' / isFetching: ' + isFetching) }, [users, isFetching]);
@@ -38,13 +47,31 @@ const columns = [{
     accessor: 'phone'
 }]
 
+/**
+ * GenericEmikatTable Prop Types
+ * 
+ * @typedef {Object} GenericEmikatTableProps
+ */
 GenericEmikatTable.propTypes = {
     users: PropTypes.array.isRequired,
+    /**
+     * Show the loading indicator. Useful, is data is loaded asynchronously
+     */
     isFetching: PropTypes.bool
 };
 
+/**
+ * GenericEmikatTable Default Props
+ * @type {GenericEmikatTableProps}
+ */
 GenericEmikatTable.defaultProps = {
+    /**
+     * User array (demo only)
+     */
     users: [],
+    /**
+     * @type {bool}
+     */
     isFetching: true
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 /**
  * Error boundaries are React components that catch JavaScript errors anywhere in their 
@@ -50,6 +51,13 @@ class GlobalErrorBoundary extends React.Component {
 }
 
 export default GlobalErrorBoundary;
+
+GlobalErrorBoundary.propTypes = {
+  /**
+   * Resets the Error Boundary and re-renders the child components
+   */
+  reset: PropTypes.bool
+};
 
 GlobalErrorBoundary.defaultProps = {
   reset: false
