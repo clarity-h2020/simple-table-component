@@ -12,15 +12,14 @@ import "react-table/react-table.css";
 // see https://www.robinwieruch.de/react-pass-props-to-component/#react-props-code-style
 const GenericEmikatTable = ({ users, isFetching }) => {
 
-    useEffect(() => { console.log('users:' + users + ' / isFetching: ' + isFetching) }, [users, isFetching]);
+    //useEffect(() => { console.log('users:' + users + ' / isFetching: ' + isFetching) }, [users, isFetching]);
 
-    return (<div>
+    return (
         <ReactTable
             data={users}
             columns={columns}
             loading={isFetching}
-        />
-    </div>);
+        />);
 }
 
 const columns = [{

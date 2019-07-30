@@ -50,27 +50,23 @@ function App(props) {
     const fetchData = async () => {
       try {
 
+        setData((d) => ({ ...d, isFetching: true }));
         const response = await EMIKATHelpers.fetchUsers(data.url);
         /*response.catch((error) => {
           console.error('error caught in promise', error);
           setData((d) => ({ ...d, users: [], isFetching: false }));
         });*/
-        console.log(JSON.stringify(response));
-        //await response;
 
         // the functional update form (here implemented as arrow function) of setState lets us specify how the state needs to change without referencing the current state.
-        // The function will receive the previous value, and return an updated value. We call it d instead of data.
+        // The function will receive the previous value, and return an updated value. We call it 'd' instead of data.
         // Therefore we don't need data and users in the list of dependencies but just data.url :o
 
         if (!ignore) {
           console.log(JSON.stringify(response));
-          setData((data) => ({ ...data, users: response.data, isFetching: true }));
+          setData((d) => ({ ...d, users: response.data, isFetching: false }));
         } else {
           console.log('status change during async call, ignoring');
         }
-
-        
-        
       } catch (error) {
         console.error('error caught in fetchData', error);
         setData((d) => ({ ...d, users: [], isFetching: false }));
@@ -125,6 +121,10 @@ function App(props) {
               <input value={data.url} onChange={e => handleChange(e.target.value)} />
               <GlobalErrorBoundary>
                 <Suspense fallback={<h2>Product list is loading...</h2>}>
+                  {/* 
+                    Spread operator. We could have used data.isFerching, etc.
+                    For pros/cons see https://codeburst.io/react-anti-pattern-jsx-spread-attributes-59d1dd53677f
+                  */}
                   <GenericEmikatTable {...data} />
                 </Suspense>
               </GlobalErrorBoundary>
