@@ -17,7 +17,10 @@ import "react-table/react-table.css";
  * @param {GenericEmikatTableProps} props 
  * @version 0.1.0
  * @author [Pascal Dihé](https://github.com/p-a-s-c-a-l)
- * @see https://github.com/clarity-h2020/emikat/
+ * @see [EMIKAT](https://github.com/clarity-h2020/emikat/) GitHub Project and [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html)
+ * 
+ * @component
+ * @visibleName Generic EMIKAT Table
  */
 const GenericEmikatTable = ({ users, isFetching }) => {
 

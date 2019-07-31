@@ -62,7 +62,7 @@ function App(props) {
         // Therefore we don't need data and users in the list of dependencies but just data.url :o
 
         if (!ignore) {
-          console.log(JSON.stringify(response));
+          //console.log(JSON.stringify(response));
           setData((d) => ({ ...d, users: response.data, isFetching: false }));
         } else {
           console.log('status change during async call, ignoring');
@@ -92,6 +92,10 @@ function App(props) {
     }
   }, [props.location]);
 
+  /**
+   * Handles the onChange event in the url input field ...
+   * @param {string} value 
+   */
   function handleChange(value) {
     setData({ ...data, url: value });
   }
