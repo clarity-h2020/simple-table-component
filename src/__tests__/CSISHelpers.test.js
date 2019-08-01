@@ -34,7 +34,7 @@ beforeAll(() => {
 });
 
 
-test.only('test extract study area from study json', async (done) => {
+test('test extract study area from study json', async (done) => {
     expect.assertions(5);
     const response = await axios.get('http://localhost:31336/jsonapi/group/study?filter[id][condition][path]=id&filter[id][condition][operator]=%3D&filter[id][condition][value]=c3609e3e-f80f-482b-9e9f-3a26226a6859');
     expect(response).toBeDefined();
@@ -45,6 +45,73 @@ test.only('test extract study area from study json', async (done) => {
     const studyAreaJson = CSISHelpers.extractStudyAreaFromStudyGroupNode(response.data.data[0]);
     expect(studyAreaJson).toEqual(studyArea);
     done();
+});
+
+test('find HC LE resources in resource array', () => {
+
+    const tagType = 'taxonomy_term--eu_gl';
+    const tagName = 'Hazard Characterization - Local Effects';
+    const resourcesArray = apiResponseResources.data;
+    const includedArray = apiResponseResources.included;
+    const filteredResources = CSISHelpers.filterResourcesbyTagName(resourcesArray, includedArray, tagType, tagName);
+    expect(filteredResources).toHaveLength(18);
+});
+
+test('find HC resources in resource array', () => {
+
+    const tagType = 'taxonomy_term--eu_gl';
+    const tagName = 'Hazard Characterization';
+    const resourcesArray = apiResponseResources.data;
+    const includedArray = apiResponseResources.included;
+    const filteredResources = CSISHelpers.filterResourcesbyTagName(resourcesArray, includedArray, tagType, tagName);
+    expect(filteredResources).toHaveLength(10);
+});
+
+test('find resources with @mapview:ogc:wms references in resource array', () => {
+
+    const referenceType = '@mapview:ogc:wms';
+    const resourcesArray = apiResponseResources.data;
+    const includedArray = apiResponseResources.included;
+    const filteredResources = CSISHelpers.filterResourcesbyReferenceType(resourcesArray, includedArray, referenceType);
+    expect(filteredResources.length).toBeLessThan(resourcesArray.length);
+    expect(filteredResources).toHaveLength(30);
+});
+
+test('find HC resources with @mapview:ogc:wms references in resource array', () => {
+
+    const tagType = 'taxonomy_term--eu_gl';
+    const tagName = 'Hazard Characterization';
+    const referenceType = '@mapview:ogc:wms';
+    const resourcesArray = apiResponseResources.data;
+    const includedArray = apiResponseResources.included;
+
+    const filteredResources = CSISHelpers.filterResourcesbyReferenceType(
+        CSISHelpers.filterResourcesbyTagName(resourcesArray, includedArray, tagType, tagName), 
+        includedArray, 
+        referenceType);
+    expect(filteredResources.length).toBeLessThan(resourcesArray.length);
+    //expect(filteredResources).toHaveLength(30);
+});
+
+test('get 1st "reference" for first HC resource with @mapview:ogc:wms references in resource array', () => {
+
+    const tagType = 'taxonomy_term--eu_gl';
+    const tagName = 'Hazard Characterization';
+    const referenceType = '@mapview:ogc:wms';
+    const resourcesArray = apiResponseResources.data;
+    const includedArray = apiResponseResources.included;
+
+    const filteredResources = CSISHelpers.filterResourcesbyReferenceType(
+        CSISHelpers.filterResourcesbyTagName(resourcesArray, includedArray, tagType, tagName), 
+        includedArray, 
+        referenceType);
+    expect(filteredResources).not.toBeNull();
+    expect(filteredResources.length).toBeGreaterThan(0);
+    const reference =  CSISHelpers.extractReferencesfromResource(filteredResources[0],includedArray, referenceType);
+    expect(reference).not.toBeNull();
+    expect(reference.length).toBeGreaterThan(0);
+
+    //expect(filteredResources).toHaveLength(30);
 });
 
 afterAll(() => {
