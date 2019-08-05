@@ -1,5 +1,5 @@
 import Wkt from 'wicket';
-import * as log from 'loglevel';
+import log from 'loglevel';
 
 
 /**
@@ -60,20 +60,24 @@ export default class CSISHelpers {
    * Filters resource array by tag id/name which are inlcuded in the tags array (due to Drupal API quirks).
    * 
    * @param {Object[]} resourceArray the original resource array
-   * @param {Object[]} tagsArray included objects - Drupa APi style! :-/
+   * @param {Object[]} tagsArray included objects - Drupal APi style! :-/
    * @param {string} tagType The tag type, e.g. 'taxonomy_term--eu_gl'
    * @param {string} tagName The name of the tag, e.g.'eu-gl:hazard-characterization:local-effects'
    * @return {Object[]}
    * @see getIncludedObject()
    */
   static filterResourcesbyTagName(resourceArray, tagsArray, tagType, tagName) {
+    /**
+     * If we request exactly **one** resource, there would be a possiblity for simplification that applies to all taxonomy terms and tags: 
+     * Instead of looking at `resource.relationships.field_resource_tags.data` we just have to search in `tagsArray` (inlcuded objects, respectively).
+     */
     let filteredResourceArray = resourceArray.filter((resource) => {
       if (resource.relationships.field_resource_tags != null && resource.relationships.field_resource_tags.data != null
         && resource.relationships.field_resource_tags.data.length > 0) {
         return resource.relationships.field_resource_tags.data.some((tagReference) => {
-          return tagsArray.some((tagObject) => {
+          return tagReference.type === tagType ? tagsArray.some((tagObject) => {
             return (tagReference.type === tagObject.type && tagReference.id === tagObject.id && tagObject.attributes.name === tagName);
-          });
+          }) : false;
         });
       } else {
         log.warn('no tags found  in resource ' + resource.id)
@@ -120,7 +124,7 @@ export default class CSISHelpers {
     return filteredResourceArray;
   }
   /**
-      * Extracts refderences which are inlcuded in the references array (due to Drupal API quirks) from a resource
+      * Extracts references which are included in the references array (due to Drupal API quirks) from a resource
       * 
       * @param {Object} resource the original resource
       * @param {Object[]} referencesArray included objects - Drupal APi style! :-/
@@ -130,6 +134,7 @@ export default class CSISHelpers {
       */
   static extractReferencesfromResource(resource, referencesArray, referenceType) {
     let references = [];
+    // the reference type is avialble only at the level of the `included` array
     if (resource.relationships.field_references != null && resource.relationships.field_references.data != null
       && resource.relationships.field_references.data.length > 0) {
       references = resource.relationships.field_references.data.flatMap((referenceReference) => {
@@ -143,6 +148,27 @@ export default class CSISHelpers {
     log.debug(`${references.length} references found in resouce for reference type ${referenceType}`);
     return references;
   }
+
+  /**
+      * Extracts tags which are included in the tags array (due to Drupal API quirks) from a resource
+      * 
+      * @param {Object} resource the original resource
+      * @param {Object[]} tagsArray included objects - Drupal APi style! :-/
+      * @param {string} tagType The tag type, e.g. '@mapview:ogc:wms'
+      * @return {Object[]}
+      * @see getIncludedObject()
+      */
+  static extractTagsfromResource(resource, tagsArray, tagType) {
+    let tags = [];
+    if (resource.relationships.field_resource_tags != null && resource.relationships.field_resource_tags.data != null
+      && resource.relationships.field_resource_tags.data.length > 0) {
+      tags = resource.relationships.field_resource_tags.data.flatMap(tagReference => {
+        return tagReference.type === tagType ? tagsArray.filter(tagObject => tagReference.type === tagObject.type && tagReference.id === tagObject.id) : [];
+      });
+    }
+    log.debug(`${tags.length} tags found in resouce for tag type ${tagType}`);
+    return tags;
+  }
 }
 
 
@@ -150,11 +176,15 @@ export default class CSISHelpers {
 
 /**
  * We can either use "import CSISHelpers from './CSISHelpers.js'" and call  "CSISHelpers.getIncludedObject(...)" or
- * "import {getIncludedObject} from './CSISHelpers.js'" and call "getIncludedObject(...)" or
+ * "import {getIncludedObject} from './CSISHelpers.js'" and call "getIncludedObject(...)".
+ * 
+ * However, It is not recommended to mix default exports with “named” exports. 
+ * See https://www.kaplankomputing.com/blog/tutorials/javascript/understanding-imports-exports-es6/
  */
 
 export const getIncludedObject = CSISHelpers.getIncludedObject;
 export const filterResourcesbyTagName = CSISHelpers.filterResourcesbyTagName;
-export const filterResourcesbyReferenceType = CSISHelpers.filterResourcesbyReferenceType
-export const extractReferencesfromResource = CSISHelpers.extractReferencesfromResource
+export const filterResourcesbyReferenceType = CSISHelpers.filterResourcesbyReferenceType;
+export const extractReferencesfromResource = CSISHelpers.extractReferencesfromResource;
+export const extractTagsfromResource = CSISHelpers.extractTagsfromResource;
 export const sum = CSISHelpers.sum;
