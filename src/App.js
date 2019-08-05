@@ -50,6 +50,7 @@ function App(props) {
     const fetchData = async () => {
       try {
 
+        // functional update form 
         setData((d) => ({ ...d, isFetching: true }));
         const response = await EMIKATHelpers.fetchUsers(data.url);
         /*response.catch((error) => {

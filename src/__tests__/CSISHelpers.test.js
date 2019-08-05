@@ -114,6 +114,21 @@ test('get 1st "reference" for first HC resource with @mapview:ogc:wms references
     //expect(filteredResources).toHaveLength(30);
 });
 
+test('check for emikat id in study',  () => {
+    const emikatId =  CSISHelpers.extractEmikatIdFromStudyGroupNode(apiResponseStudy.data[0]);
+    expect(emikatId).toEqual(2846);
+
+});
+
+test('get and compare X-CSRF Token', async() => {
+    expect.assertions(1);
+    const token1 =  await CSISHelpers.getXCsrfToken();
+    const token2 =  await CSISHelpers.getXCsrfToken();
+    console.log(token2); 
+    expect(token1).toEqual(token2);
+});
+
+
 afterAll(() => {
     console.log('afterAll');
     server.close(() => {

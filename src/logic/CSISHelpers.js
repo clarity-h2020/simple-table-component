@@ -1,5 +1,7 @@
 import Wkt from 'wicket';
 import log from 'loglevel';
+import axios from 'axios';
+
 
 
 /**
@@ -34,12 +36,70 @@ export default class CSISHelpers {
     return null;
   }
 
+  static async getXCsrfToken(csisBaseUrl = 'https://csis.myclimateservice.eu') {
+    const apiResponse = await axios.get(csisBaseUrl + "/rest/session/token", { credentials: 'include' });
+    return apiResponse.data;
+  }
+
+
   /**
+   * Gets EMIKAT Credentials from Drupal JSON API and return a headers object
+   * ready to be used with axios.
+   * 
+   * @param {String} csisBaseUrl 
+   * @return {Object}
+   */
+  static getEmikatCredentialsFromCsis(csisBaseUrl = 'https://csis.myclimateservice.eu') {
+
+    try {
+      const apiResponse = axios.get(csisBaseUrl + "/jsonapi", { credentials: 'include' });
+      const userResponse = axios.get(apiResponse.data.meta.links.me.href, { credentials: 'include' });
+
+      if(userResponse.data.data.attributes.field_basic_auth_credentials) {
+        const header = {'Authorization' : 'Basic ' + btoa(userResponse.data.data.attributes.field_basic_auth_credentials)};
+        return header;
+      } else {
+        log.error('no field field_basic_auth_credentials in user profile ' + userResponse.data.data.attributes.name);
+        return null;
+      }
+    }
+    catch(error) {
+      console.error(`could not fetch emikat credentials from $csisBaseUrl`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Retrieves the EIMAT Study / Scenario ID from the Drupal Study
    * 
    * @param {Object} studyGroupNode 
-   * @returns {Wkt}
+   * @return {Number}
+   */
+  static extractEmikatIdFromStudyGroupNode(studyGroupNode) {
+   
+    let emikatId = -1;
+    if (studyGroupNode.attributes.field_emikat_id !== undefined && studyGroupNode.attributes.field_emikat_id != null 
+      && !isNaN(studyGroupNode.attributes.field_emikat_id)) {
+      emikatId = parseInt(studyGroupNode.attributes.field_emikat_id, 10);
+    } else {
+      log.warn('no emikat id in study ' + studyGroupNode.attributes.field_emikat_id);
+    }
+
+    return emikatId;
+  }
+
+
+
+  /**
+   * Returns the JSON representation of the study area.
+   * 
+   * @param {Object} studyGroupNode 
+   * @returns {JSON}
    */
   static extractStudyAreaFromStudyGroupNode(studyGroupNode) {
+    /**
+     * @type {Wkt}
+     */
     let studyArea = new Wkt.Wkt();
 
     if (studyGroupNode.attributes.field_area != null && studyGroupNode.attributes.field_area.value != null) {
@@ -182,6 +242,9 @@ export default class CSISHelpers {
  * See https://www.kaplankomputing.com/blog/tutorials/javascript/understanding-imports-exports-es6/
  */
 
+export const getXCsrfToken = CSISHelpers.getXCsrfToken
+export const extractEmikatIdFromStudyGroupNode = CSISHelpers.extractEmikatIdFromStudyGroupNode
+export const getEmikatCredentialsFromCsis = CSISHelpers.getEmikatCredentialsFromCsis;
 export const getIncludedObject = CSISHelpers.getIncludedObject;
 export const filterResourcesbyTagName = CSISHelpers.filterResourcesbyTagName;
 export const filterResourcesbyReferenceType = CSISHelpers.filterResourcesbyReferenceType;
