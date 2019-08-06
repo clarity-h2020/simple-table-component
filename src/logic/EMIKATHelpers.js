@@ -2,11 +2,16 @@ import axios from 'axios';
 
 export const EMIKAT_STUDY_ID = '$emikat_id';
 
+const emikatClient = axios.create();
 
-export async function fetchUsers(url) {
+export async function fetchUsers(url, authString) {
   try {
     console.log('fetching from:' + url);
-    const response = await axios.get(url);
+    const response = await emikatClient.get(url, { headers: { Authorization: authString } });
+
+    // we *could* do once:  
+    emikatClient.defaults.headers.common['Authorization'] = authString;
+    // but that would break functional code as it has side effects on the emikatClient instance.
 
     //console.log(JSON.stringify(response));
     return response;
@@ -28,6 +33,23 @@ export function addEmikatId(urlTemplate, emikatId) {
   return url;
 }
 
+/**
+ * Generates a simple column defintion for ReactTable from EMIKAT tabular Data
+ * 
+ * @param {Object[]} columns 
+ * @return {Object[]}
+ */
+export function generateColumns(columnnames) {
+
+  // add parentheses around the entire body `({})` to force the parser to treat the object literal 
+  // as an expression so that it's not treated as a block statement.
+  return columnnames.map((columnname, index) => ({
+    id: columnname, // Required because our accessor is not a string
+    Header: columnname,
+    accessor: row => row.values[index] // Custom value accessors!
+  }));
+}
+
 
 export function sum(a, b) {
   return a + b;
@@ -36,5 +58,5 @@ export function sum(a, b) {
 
 /**
  * We can either use "import EMIKATHelpers from './EMIKATHelpers.js'" and call  "EMIKATHelpers.getIncludedObject(...)" or
- * "import {getIncludedObject} from './EMIKATHelpers.js'" and call "getIncludedObject(...)". 
+ * "import {getIncludedObject} from './EMIKATHelpers.js'" and call "getIncludedObject(...)".
  */

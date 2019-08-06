@@ -1,9 +1,11 @@
 import React from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // Import React Table
-import ReactTable from "react-table";
+import ReactTable from 'react-table';
 import "react-table/react-table.css";
+
+import * as EMIKATHelpers from './../logic/EMIKATHelpers'
 
 // React Arrow Function Component
 // see https://www.robinwieruch.de/react-function-component/#react-arrow-function-component
@@ -22,19 +24,20 @@ import "react-table/react-table.css";
  * @component
  * @visibleName Generic EMIKAT Table
  */
-const GenericEmikatTable = ({ users, isFetching }) => {
+const GenericEmikatTable = ({ data, isFetching, generateColumns }) => {
 
-    //useEffect(() => { console.log('users:' + users + ' / isFetching: ' + isFetching) }, [users, isFetching]);
+    //useEffect(() => { console.log('data:' + data + ' / isFetching: ' + isFetching) }, [data, isFetching]);
 
     return (
         <ReactTable
-            data={users}
-            columns={columns}
+            data={data.rows}
+            columns={generateColumns(data.columnnames)}
             loading={isFetching}
+            defaultPageSize={10}
         />);
 }
 
-const columns = [{
+/*const columns = [{
     Header: 'ID',
     accessor: 'id', // String-based value accessors!
     Cell: (props) => <span className='number'>{props.value}</span> // Custom cell components!
@@ -48,7 +51,7 @@ const columns = [{
 }, {
     Header: (props) => <span>Phone</span>, // Custom header components!
     accessor: 'phone'
-}]
+}]*/
 
 /**
  * GenericEmikatTable Prop Types
@@ -56,11 +59,13 @@ const columns = [{
  * @typedef {Object} GenericEmikatTableProps
  */
 GenericEmikatTable.propTypes = {
-    users: PropTypes.array.isRequired,
+    data: PropTypes.object.isRequired,
     /**
      * Show the loading indicator. Useful, is data is loaded asynchronously
      */
-    isFetching: PropTypes.bool
+    isFetching: PropTypes.bool,
+
+    generateColumns: PropTypes.func
 };
 
 /**
@@ -71,11 +76,13 @@ GenericEmikatTable.defaultProps = {
     /**
      * User array (demo only)
      */
-    users: [],
+    data: [{ columns: [] }, { rows: [] }],
     /**
      * @type {bool}
      */
-    isFetching: true
+    isFetching: true,
+
+    generateColumns: EMIKATHelpers.generateColumns
 };
 
 export default GenericEmikatTable

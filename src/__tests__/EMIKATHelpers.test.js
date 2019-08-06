@@ -1,5 +1,8 @@
 import axios from 'axios';
-import EMIKATHelpers from './../logic/EMIKATHelpers.js';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import * as EMIKATHelpers from './../logic/EMIKATHelpers.js';
+import GenericEmikatTable from './../components/GenericEmikatTable';
 import CSISHelpers from './../logic/CSISHelpers.js';
 //import {create, router, defaults, rewriter} from 'json-server';
 import express from 'express'
@@ -30,6 +33,22 @@ it ('tests JSON API', async (done) => {
   const response = await axios.get('http://localhost:31337/EmiKatTst/api/scenarios/2846/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/data');
   expect(response.data).toEqual(populationExposure);
   done();
+});
+
+test ('ReactTable columns defintions automatically generated from EMIAT tabulat data', ()=>{
+
+  const columns = EMIKATHelpers.generateColumns(populationExposure.columnnames);
+  expect(columns).toBeInstanceOf(Array);
+  expect(columns.length).toEqual(populationExposure.columnnames.length);
+  columns.forEach((columDefinition, index)=>{
+    expect(columDefinition.Header).toEqual(populationExposure.columnnames[index]);
+  });
+});
+
+it('GenericEmikatTable renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<GenericEmikatTable data={populationExposure} isFetching={false} />, div);
+  ReactDOM.unmountComponentAtNode(div);
 });
 
 afterAll(() => {
