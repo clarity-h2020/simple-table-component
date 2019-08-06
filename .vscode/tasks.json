@@ -14,6 +14,11 @@
             "problemMatcher": [
                 "$jshint"
             ]
+        },
+        {
+            "type": "npm",
+            "script": "styleguide",
+            "problemMatcher": []
         }
     ]
 }

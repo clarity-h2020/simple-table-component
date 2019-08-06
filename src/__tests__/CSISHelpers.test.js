@@ -1,4 +1,5 @@
 import axios from 'axios';
+import log from 'loglevel';
 import CSISHelpers from './../logic/CSISHelpers.js';
 import express from 'express'
 import apiResponseStudy from './../__fixtures__/study.json';
@@ -119,15 +120,6 @@ test('check for emikat id in study',  () => {
     expect(emikatId).toEqual(2846);
 
 });
-
-test('get and compare X-CSRF Token', async() => {
-    expect.assertions(1);
-    const token1 =  await CSISHelpers.getXCsrfToken();
-    const token2 =  await CSISHelpers.getXCsrfToken();
-    console.log(token2); 
-    expect(token1).toEqual(token2);
-});
-
 
 afterAll(() => {
     console.log('afterAll');

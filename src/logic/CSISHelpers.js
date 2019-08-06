@@ -36,39 +36,6 @@ export default class CSISHelpers {
     return null;
   }
 
-  static async getXCsrfToken(csisBaseUrl = 'https://csis.myclimateservice.eu') {
-    const apiResponse = await axios.get(csisBaseUrl + "/rest/session/token", { credentials: 'include' });
-    return apiResponse.data;
-  }
-
-
-  /**
-   * Gets EMIKAT Credentials from Drupal JSON API and return a headers object
-   * ready to be used with axios.
-   * 
-   * @param {String} csisBaseUrl 
-   * @return {Object}
-   */
-  static getEmikatCredentialsFromCsis(csisBaseUrl = 'https://csis.myclimateservice.eu') {
-
-    try {
-      const apiResponse = axios.get(csisBaseUrl + "/jsonapi", { credentials: 'include' });
-      const userResponse = axios.get(apiResponse.data.meta.links.me.href, { credentials: 'include' });
-
-      if(userResponse.data.data.attributes.field_basic_auth_credentials) {
-        const header = {'Authorization' : 'Basic ' + btoa(userResponse.data.data.attributes.field_basic_auth_credentials)};
-        return header;
-      } else {
-        log.error('no field field_basic_auth_credentials in user profile ' + userResponse.data.data.attributes.name);
-        return null;
-      }
-    }
-    catch(error) {
-      console.error(`could not fetch emikat credentials from $csisBaseUrl`, error);
-      return null;
-    }
-  }
-
   /**
    * Retrieves the EIMAT Study / Scenario ID from the Drupal Study
    * 
