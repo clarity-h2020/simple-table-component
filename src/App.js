@@ -1,4 +1,14 @@
-import React, { useEffect, useState, Suspense } from 'react';
+/* 
+ * ***************************************************
+ * 
+ * cismet GmbH, Saarbruecken, Germany
+ * 
+ *               ... and it just works.
+ * 
+ * ***************************************************
+ */
+
+ import React, { useEffect, useState, Suspense } from 'react';
 import axios from 'axios';
 import queryString from 'query-string';
 //import GenericEmikatTable from "./components/GenericEmikatTable"; // -> Lazy
@@ -21,7 +31,7 @@ function App(props) {
   const GenericEmikatTable = React.lazy(() => import('./components/GenericEmikatTable.js'));
 
   // useState returns an array with 2 elements, and we’re using **ES6 destructuring** to assign names to them
-  const [data, setData] = useState({ url: 'https://jsonplaceholder.typicode.com/users', users: [], isFetching: false });
+  const [applicationState, setApplicationState] = useState({ url: 'https://jsonplaceholder.typicode.com/users', users: [], isFetching: false });
   /**
    * You might be wondering: why is useState not named createState instead?
    * “Create” wouldn’t be quite accurate because the state is only created the first time our component renders. 
@@ -45,14 +55,14 @@ function App(props) {
   useEffect(() => {
     // Effect callbacks are synchronous to prevent race conditions. Put the async function inside!
     let ignore = false;
-    console.log('url changed:' + data.url);
+    console.log('url changed:' + applicationState.url);
 
     const fetchData = async () => {
       try {
 
         // functional update form 
-        setData((d) => ({ ...d, isFetching: true }));
-        const response = await EMIKATHelpers.fetchUsers(data.url);
+        setApplicationState((state) => ({ ...state, isFetching: true }));
+        const response = await EMIKATHelpers.fetchUsers(applicationState.url);
         /*response.catch((error) => {
           console.error('error caught in promise', error);
           setData((d) => ({ ...d, users: [], isFetching: false }));
@@ -64,13 +74,13 @@ function App(props) {
 
         if (!ignore) {
           //console.log(JSON.stringify(response));
-          setData((d) => ({ ...d, users: response.data, isFetching: false }));
+          setApplicationState((state) => ({ ...state, users: response.data, isFetching: false }));
         } else {
           console.log('status change during async call, ignoring');
         }
       } catch (error) {
         console.error('error caught in fetchData', error);
-        setData((d) => ({ ...d, users: [], isFetching: false }));
+        setApplicationState((state) => ({ ...state, users: [], isFetching: false }));
       }
     };
 
@@ -81,14 +91,14 @@ function App(props) {
       ignore = true;
     };
 
-  }, [data.url]);
+  }, [applicationState.url]);
 
   useEffect(() => {
     console.log('location changed:' + JSON.stringify(props.location));
     if (props.location && props.location.search) {
       const values = queryString.parse(props.location.search)
-      if (values.id && values.id !== null && values.url && values.url !== null) {
-        console.log(values.id);
+      if (/*values.id && values.id !== null && */values.url && values.url !== null) {
+        setApplicationState((state) => ({ ...state, url: values.url, isFetching: false }));
       }
     }
   }, [props.location]);
@@ -98,12 +108,10 @@ function App(props) {
    * @param {string} value 
    */
   function handleChange(value) {
-    setData({ ...data, url: value });
+    setApplicationState({ ...applicationState, url: value });
   }
 
   return (
-
-    
             <div className="App">
               <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
@@ -123,14 +131,14 @@ function App(props) {
       ...data instead of data={data.users}, 
       https://www.robinwieruch.de/react-pass-props-to-component/#react-props-syntax-spread-rest*/ }
 
-              <input value={data.url} onChange={e => handleChange(e.target.value)} />
+              <input value={applicationState.url} onChange={e => handleChange(e.target.value)} />
               <GlobalErrorBoundary>
                 <Suspense fallback={<h2>Product list is loading...</h2>}>
                   {/* 
-                    Spread operator. We could have used data.isFerching, etc.
+                    Spread operator. We could have used data.isFetching, etc.
                     For pros/cons see https://codeburst.io/react-anti-pattern-jsx-spread-attributes-59d1dd53677f
                   */}
-                  <GenericEmikatTable {...data} />
+                  <GenericEmikatTable {...applicationState} />
                 </Suspense>
               </GlobalErrorBoundary>
             </div>
@@ -139,4 +147,13 @@ function App(props) {
   );
 }
 
+/**
+ * Steps for loading tabular data from EMIKAT API 
+ * 1) get **EMIKAT credentials** from CSIS API -> requires authenticated user loggin in CSIS
+ * 2) get `$emikat_id` from study group node -> requires study id obtained from query param or seamless.js iFrame communication
+ * 3) get **Data Package** from study group node and extract emikat **resources**
+ *    - filter by **EU-GL step** obtained from query param or seamless.js iFrame communication
+ *    - `taxonomy_term--service_type` from tags with value 'EMIKAT' (?)
+ *    - refence type with value `EMIKAT:table`? from references array?
+ */
 export default App;

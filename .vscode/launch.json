@@ -43,6 +43,7 @@
         "${fileBasenameNoExtension}",
         "--no-cache",
         "--env=jsdom",
+        "--verbose=false",
         "--watchAll=false"
       ],
       "cwd": "${workspaceRoot}",

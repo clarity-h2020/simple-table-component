@@ -1,11 +1,21 @@
-import React from 'react';
+/* 
+ * ***************************************************
+ * 
+ * cismet GmbH, Saarbruecken, Germany
+ * 
+ *               ... and it just works.
+ * 
+ * ***************************************************
+ */
+
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 // Import React Table
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 
-import * as EMIKATHelpers from './../logic/EMIKATHelpers'
+import * as EMIKATHelpers from '../logic/EMIKATHelpers'
 
 // React Arrow Function Component
 // see https://www.robinwieruch.de/react-function-component/#react-arrow-function-component
@@ -27,6 +37,7 @@ import * as EMIKATHelpers from './../logic/EMIKATHelpers'
 const GenericEmikatTable = ({ data, isFetching, generateColumns }) => {
 
     //useEffect(() => { console.log('data:' + data + ' / isFetching: ' + isFetching) }, [data, isFetching]);
+    useEffect(() => console.log(data + 'value changed!'), [data]);
 
     return (
         <ReactTable

@@ -1,3 +1,13 @@
+/* 
+ * ***************************************************
+ * 
+ * cismet GmbH, Saarbruecken, Germany
+ * 
+ *               ... and it just works.
+ * 
+ * ***************************************************
+ */
+
 import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';

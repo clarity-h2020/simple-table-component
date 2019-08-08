@@ -25,3 +25,4 @@ yarn-error.log*
 # cypress
 /cypress
 /src/__fixtures__/csisHeaders.js
+/src/__fixtures__/emikatCredentials.js

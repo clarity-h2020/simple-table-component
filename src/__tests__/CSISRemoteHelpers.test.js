@@ -12,15 +12,18 @@ let debugLogInterceptor;
 
 beforeAll(async (done) => {
 
-    // this will fail when a new instance of axios has been created in CSISRemoteHelpers
-    // because the instace is created with the *previous* defaults! :o
-    axios.defaults.withCredentials = true;
+    //axios.defaults.withCredentials = true;
     if (headers && Array.isArray(headers)) {
         headers.forEach((header)=>{
-            axios.defaults.headers.common[header[0]] = header[1];
+            // this will fail when a new instance of axios has been created in CSISRemoteHelpers
+            // because the instace is created with the *previous* defaults! :o
+            //axios.defaults.headers.common[header[0]] = header[1];
+
+            // therefore we change the instance in CSISRemoteHelpers :o
+            CSISRemoteHelpers.csisClient.defaults.headers.common[header[0]] = header[1];
         });
     }
-    debugLogInterceptor = axios.interceptors.request.use((request) => {
+    debugLogInterceptor = CSISRemoteHelpers.csisClient.interceptors.request.use((request) => {
         log.debug(JSON.stringify(request));
         return request;
     });
@@ -30,18 +33,17 @@ beforeAll(async (done) => {
 beforeEach(async (done) => {
     // after 1st login / set cookie, the token is fixed, otherwise different for each call
     const xCsrfToken = await CSISRemoteHelpers.getXCsrfToken();
-    // doesn't work if we use *instances* of axios
-    axios.defaults.headers.common[axios.defaults.xsrfHeaderName] = xCsrfToken;
+    CSISRemoteHelpers.csisClient.defaults.headers.common[axios.defaults.xsrfHeaderName] = xCsrfToken;
     done();
 });
 
 afterAll(() => {
-    delete axios.defaults.withCredentials;
-    delete axios.defaults.headers.common[axios.defaults.xsrfHeaderName];
+    //delete axios.defaults.withCredentials;
+    delete CSISRemoteHelpers.csisClient.defaults.headers.common[axios.defaults.xsrfHeaderName];
     if (headers) {
-        delete axios.defaults.headers.common[headers[0]];
+        delete CSISRemoteHelpers.csisClient.defaults.headers.common[headers[0]];
     }
-    axios.interceptors.request.eject(debugLogInterceptor);
+    CSISRemoteHelpers.csisClient.interceptors.request.eject(debugLogInterceptor);
 });
 
 test('get and compare X-CSRF Token', async (done) => {
@@ -60,6 +62,7 @@ test('get and compare X-CSRF Token', async (done) => {
 
 describe('Remote API tests with authentication', () => {
 
+    // skip tests if local headers file containing session cookie is not available
     if (!headers) {
         it.only('no headers.js fixture found, skipping remote API tests', () => {
             log.warn('no headers.js fixture found, skipping remote API tests');

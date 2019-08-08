@@ -1,3 +1,13 @@
+/* 
+ * ***************************************************
+ * 
+ * cismet GmbH, Saarbruecken, Germany
+ * 
+ *               ... and it just works.
+ * 
+ * ***************************************************
+ */
+
 import Wkt from 'wicket';
 import log from 'loglevel';
 import axios from 'axios';
@@ -13,7 +23,11 @@ import axios from 'axios';
  * See https://stackoverflow.com/questions/36795819/when-should-i-use-curly-braces-for-es6-import/36796281#36796281
  */
 
-
+/**
+ * Helpers for cSIS API
+ * 
+ * @author Pascal Dihé
+ */
 export default class CSISHelpers {
   /**
     * Drupal JSON API 'deeply' inlcudes objects, e.g. &include=field_references are provided onyl once in a separate array name 'inlcuded'.

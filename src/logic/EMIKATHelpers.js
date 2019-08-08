@@ -1,8 +1,37 @@
+/* 
+ * ***************************************************
+ * 
+ * cismet GmbH, Saarbruecken, Germany
+ * 
+ *               ... and it just works.
+ * 
+ * ***************************************************
+ */
+
 import axios from 'axios';
 
 export const EMIKAT_STUDY_ID = '$emikat_id';
 
 const emikatClient = axios.create();
+
+export async function fetchData(url, emikatCredentials) {
+  try {
+
+    console.log('fetching from EMIKAT:' + url);
+
+    const response = await emikatClient.get(url, { headers: { Authorization: emikatCredentials } });
+
+    // we *could* do once:  
+    // emikatClient.defaults.headers.common['Authorization'] = emikatCredentials;
+    // but that would break functional code as it has side effects on the emikatClient instance.
+
+    return response;
+
+  } catch (e) {
+    console.error('could not fetach EMIKAT data from ' + url, e);
+    throw e;
+  }
+};
 
 export async function fetchUsers(url, authString) {
   try {
@@ -23,7 +52,10 @@ export async function fetchUsers(url, authString) {
 };
 
 /**
- * Replaces EMIKAT_STUDY_ID with the actual study id
+ * Replaces EMIKAT_STUDY_ID with the actual study id.
+ * Note: We *could* use template strings in a fixed URL,  e.g.
+ * `https://service.emikat.at/EmiKatTst/api/scenarios/${emikat_id}/feature/view.2812/table/data`
+ * However, this has to many drawbacks
  * 
  * @param {string} urlTemplate 
  * @param {number} emikatId 

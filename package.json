@@ -14,12 +14,13 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-table": "^6.10.0",
+    "seamless": "^1.4.1",
     "wicket": "^1.3.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jsdom --verbose=false",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
