@@ -10,9 +10,6 @@
 
 import Wkt from 'wicket';
 import log from 'loglevel';
-import axios from 'axios';
-
-
 
 /**
  * Be aware of the difference between default and named exports. It is a common source of mistakes.
@@ -68,8 +65,6 @@ export default class CSISHelpers {
 
     return emikatId;
   }
-
-
 
   /**
    * Returns the JSON representation of the study area.

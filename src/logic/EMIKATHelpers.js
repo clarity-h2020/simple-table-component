@@ -14,6 +14,12 @@ export const EMIKAT_STUDY_ID = '$emikat_id';
 
 const emikatClient = axios.create();
 
+/**
+ * 
+ * @param {String} url 
+ * @param {String} emikatCredentials 
+ * @throws
+ */
 export async function fetchData(url, emikatCredentials) {
   try {
 
@@ -28,11 +34,17 @@ export async function fetchData(url, emikatCredentials) {
     return response;
 
   } catch (e) {
-    console.error('could not fetach EMIKAT data from ' + url, e);
+    console.error('could not fetch EMIKAT data from ' + url, e);
     throw e;
   }
 };
 
+/**
+ * 
+ * @param {*} url 
+ * @param {*} authString 
+ * @deprecated
+ */
 export async function fetchUsers(url, authString) {
   try {
     console.log('fetching from:' + url);

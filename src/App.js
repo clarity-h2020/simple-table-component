@@ -149,7 +149,7 @@ function App(props) {
 
 /**
  * Steps for loading tabular data from EMIKAT API 
- * 1) get **EMIKAT credentials** from CSIS API -> requires authenticated user loggin in CSIS
+ * 1) get **EMIKAT credentials** from CSIS API -> requires authenticated user logging in CSIS
  * 2) get `$emikat_id` from study group node -> requires study id obtained from query param or seamless.js iFrame communication
  * 3) get **Data Package** from study group node and extract emikat **resources**
  *    - filter by **EU-GL step** obtained from query param or seamless.js iFrame communication

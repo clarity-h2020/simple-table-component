@@ -31,7 +31,7 @@ beforeAll(() => {
         res.json(apiResponseResources);
     });
 
-    server = app.listen(31336, () => console.log('Example app listening on port 3000!'))
+    server = app.listen(31336, () => log.debug('Example app listening on port 31336!'))
 });
 
 
@@ -122,7 +122,7 @@ test('check for emikat id in study',  () => {
 });
 
 afterAll(() => {
-    console.log('afterAll');
+    log.debug('afterAll');
     server.close(() => {
         //console.log('JSON Server closed');
         //process.exit(0);

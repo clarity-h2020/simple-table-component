@@ -2,6 +2,7 @@ import axios from 'axios';
 import log from 'loglevel';
 
 import * as CSISRemoteHelpers from './../logic/CSISRemoteHelpers.js';
+import apiResponseStudy from './../__fixtures__/study.json';
 
 /**
  * @type {Object[]}
@@ -10,13 +11,16 @@ import headers from '../__fixtures__/csisHeaders.js';
 
 let debugLogInterceptor;
 
+/**
+ * Set auth headers for live API test
+ */
 beforeAll(async (done) => {
 
     //axios.defaults.withCredentials = true;
     if (headers && Array.isArray(headers)) {
         headers.forEach((header)=>{
             // this will fail when a new instance of axios has been created in CSISRemoteHelpers
-            // because the instace is created with the *previous* defaults! :o
+            // because the instance is created with the *previous* defaults! :o
             //axios.defaults.headers.common[header[0]] = header[1];
 
             // therefore we change the instance in CSISRemoteHelpers :o
@@ -69,12 +73,22 @@ describe('Remote API tests with authentication', () => {
         });
     }
 
-    it('test get EIMIKAT Credentials', async (done) => {
+    it('test get EMIKAT Credentials', async (done) => {
         const emikatCredentials = await CSISRemoteHelpers.getEmikatCredentialsFromCsis();
-        log.debug(emikatCredentials);
         expect.assertions(2);
         expect(emikatCredentials).toBeDefined();
         expect(emikatCredentials).not.toBeNull();
+        done();
+    });
+
+    it('test get complete Study', async (done) => {
+        const studyGroupNode = await CSISRemoteHelpers.getStudyGroupNodeFromCsis('c3609e3e-f80f-482b-9e9f-3a26226a6859');
+        expect.assertions(5);
+        expect(studyGroupNode).toBeDefined();
+        expect(studyGroupNode).not.toBeNull();
+        expect(apiResponseStudy).toBeDefined();
+        expect(apiResponseStudy).not.toBeNull();
+        expect(apiResponseStudy.data.id).toEqual(studyGroupNode.id);
         done();
     });
 });

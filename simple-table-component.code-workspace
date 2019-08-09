@@ -4,5 +4,7 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"javascript.implicitProjectConfig.checkJs": true
+	}
 }

@@ -1,4 +1,4 @@
-import CSISResource from './../logic/CSISResource';
+import CSISResource from '../classes/CSISResource';
 
 import apiResponseResources from './../__fixtures__/resources.json';
 

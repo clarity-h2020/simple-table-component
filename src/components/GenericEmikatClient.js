@@ -17,9 +17,9 @@ import GenericEmikatTable from './../components/GenericEmikatTable'
 
 /**
  * A Generic EMIKAT Client that understands the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html)
- * and accepts as render prop a JSC Component, e.g. <GenericEmikatTable>
+ * and accepts as render prop a JSX Component, e.g. <GenericEmikatTable>
  * 
- * @param {GenericEmikatTableProps} props 
+ * @param {GenericEmikatClientProps} props 
  * @version 0.1.0
  * @author [Pascal Dihé](https://github.com/p-a-s-c-a-l)
  * @see [EMIKAT](https://github.com/clarity-h2020/emikat/) GitHub Project and [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html)
@@ -57,15 +57,14 @@ const GenericEmikatClient = ({ emikatUrl, emikatCredentials, render: EmikatVisua
         const response = await EMIKATHelpers.fetchData(emikatUrl, emikatCredentials);
 
         if (!ignore) {
-          console.log(JSON.stringify(response));
+          //qconsole.log(JSON.stringify(response));
           setEmikatData((state) => ({...state, data: response.data, isFetching: false }));
         } else {
           log.warn('props changed during async call, ignoring');
         }
       } catch (error) {
         log.error('error caught in fetchData', error);
-        console.error('error caught in fetchData', error);
-        setEmikatData((state) => ({...state,  data: { rows: [], columnnames: [] }, isFetching: false }));
+        //setEmikatData((state) => ({...state,  data: { rows: [], columnnames: [] }, isFetching: false }));
         throw error;
       }
     };
@@ -110,7 +109,7 @@ GenericEmikatClient.propTypes = {
 
 /**
  * GenericEmikatTable Default Props
- * @type {GenericEmikatTableProps}
+ * @typedef {Object} GenericEmikatClientProps
  */
 GenericEmikatClient.defaultProps = {
 
