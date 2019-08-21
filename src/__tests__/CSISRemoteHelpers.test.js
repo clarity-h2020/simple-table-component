@@ -1,7 +1,7 @@
 import axios from 'axios';
 import log from 'loglevel';
 
-import * as CSISRemoteHelpers from './../logic/CSISRemoteHelpers.js';
+import {CSISRemoteHelpers} from 'csis-helpers-js';
 import apiResponseStudy from './../__fixtures__/study.json';
 
 /**

@@ -11,8 +11,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import log from 'loglevel';
-
-import * as EMIKATHelpers from './../logic/EMIKATHelpers'
+import {EMIKATHelpers} from 'csis-helpers-js';
 import GenericEmikatTable from './../components/GenericEmikatTable'
 
 /**

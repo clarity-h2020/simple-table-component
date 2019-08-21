@@ -8,12 +8,14 @@
  * ***************************************************
  */
 
- import React, { useEffect, useState, Suspense } from 'react';
-import axios from 'axios';
+ // WARNING: THIS COMPONENT IS BROKEN!!!
+ // TODO
+ // FIXME
+
+import React, { useEffect, useState, Suspense } from 'react';
 import queryString from 'query-string';
 //import GenericEmikatTable from "./components/GenericEmikatTable"; // -> Lazy
-import * as CSISHelpers from './logic/CSISHelpers'
-import * as EMIKATHelpers from './logic/EMIKATHelpers'
+import {EMIKATHelpers} from 'csis-helpers-js';
 import GlobalErrorBoundary from './components/GlobalErrorBoundary';
 
 
@@ -26,7 +28,7 @@ import './App.css';
  */
 function App(props) {
 
-  // Code Spiltting test
+  // Code Splitting test
   // https://reactjs.org/docs/code-splitting.html
   const GenericEmikatTable = React.lazy(() => import('./components/GenericEmikatTable.js'));
 

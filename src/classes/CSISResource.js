@@ -9,7 +9,7 @@
  * ***************************************************
  */
 
- import CSISHelpers from '../logic/CSISHelpers.js'
+ import {CSISHelpers} from 'csis-helpers-js';
 
 /**
  * Experimental CSIS Resource Class

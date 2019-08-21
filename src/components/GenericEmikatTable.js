@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 
-import * as EMIKATHelpers from '../logic/EMIKATHelpers'
+import {EMIKATHelpers} from  'csis-helpers-js';
 
 // React Arrow Function Component
 // see https://www.robinwieruch.de/react-function-component/#react-arrow-function-component

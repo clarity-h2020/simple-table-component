@@ -1,6 +1,6 @@
 import axios from 'axios';
 import log from 'loglevel';
-import CSISHelpers from './../logic/CSISHelpers.js';
+import {CSISHelpers} from 'csis-helpers-js';
 import express from 'express'
 import apiResponseStudy from './../__fixtures__/study.json';
 import apiResponseDataPackage from './../__fixtures__/dataPackage.json';

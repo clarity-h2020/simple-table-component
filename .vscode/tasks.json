@@ -19,6 +19,11 @@
             "type": "npm",
             "script": "styleguide",
             "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "styleguide:build",
+            "problemMatcher": []
         }
     ]
 }

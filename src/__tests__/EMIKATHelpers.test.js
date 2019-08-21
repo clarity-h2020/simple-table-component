@@ -11,9 +11,9 @@
 import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as EMIKATHelpers from './../logic/EMIKATHelpers.js';
+import {EMIKATHelpers} from 'csis-helpers-js';
 import GenericEmikatTable from './../components/GenericEmikatTable';
-import CSISHelpers from './../logic/CSISHelpers.js';
+import {CSISHelpers} from 'csis-helpers-js';
 //import {create, router, defaults, rewriter} from 'json-server';
 import express from 'express'
 import populationExposure from './../__fixtures__/tab.CLY_EL_POPULATION_INTERPOLATED.2016.json';
@@ -29,12 +29,6 @@ beforeAll(() => {
   })
 
   server = app.listen(31337, () => console.log('Example app listening on port 3000!'))
-});
-
-it('adds 1 + 2 to equal 3', () => {
-  console.log('test1');
-  expect(CSISHelpers.sum(1, 2)).toBe(3);
-
 });
 
 it ('tests JSON API', async (done) => {

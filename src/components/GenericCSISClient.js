@@ -12,7 +12,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import log from 'loglevel';
 
-import * as CsisHelpers from '../logic/CsisHelpers'
+import {CSISHelpers} from 'csis-helpers-js';
 import GenericCsisTable from './GenericCsisTable'
 
 /**
@@ -54,7 +54,7 @@ const GenericCsisClient = ({ CsisUrl, CsisCredentials, render: CsisVisualisation
         // functional update form, otherwise we would have to declare CsisData as part of the array
         // and the effect would be used when *state* changes (not what we want)
         setCsisData((state) => ({ ...state, isFetching: true }));
-        const response = await CsisHelpers.fetchData(CsisUrl, CsisCredentials);
+        const response = await CSISHelpers.fetchData(CsisUrl, CsisCredentials);
 
         if (!ignore) {
           //qconsole.log(JSON.stringify(response));
@@ -81,7 +81,7 @@ const GenericCsisClient = ({ CsisUrl, CsisCredentials, render: CsisVisualisation
 
   }, [CsisUrl, CsisCredentials]);
 
-
+ // TODO: csis-helpers-module
   return (<CsisVisualisationComponent data={CsisData.data} isFetching={false} />);
 }
 
