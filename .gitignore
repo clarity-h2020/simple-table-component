@@ -24,5 +24,10 @@ yarn-error.log*
 
 # cypress
 /cypress
+
+# private fixtures
 /src/__fixtures__/csisHeaders.js
 /src/__fixtures__/emikatCredentials.js
+
+# styleguide
+styleguide
