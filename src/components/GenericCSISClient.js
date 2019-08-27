@@ -57,7 +57,7 @@ const GenericCsisClient = ({ CsisUrl, CsisCredentials, render: CsisVisualisation
         const response = await CSISHelpers.fetchData(CsisUrl, CsisCredentials);
 
         if (!ignore) {
-          //qconsole.log(JSON.stringify(response));
+          //console.log(JSON.stringify(response));
           setCsisData((state) => ({...state, data: response.data, isFetching: false }));
         } else {
           log.warn('props changed during async call, ignoring');
