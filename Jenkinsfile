@@ -5,6 +5,7 @@ pipeline {
             args '-p 3001:3000'
         }
     }
+    
     stages {
         stage('Install') {
             steps {
@@ -12,8 +13,10 @@ pipeline {
             }
         }
         stage('Test') { 
+            def result = sh returnStatus: true
             steps {
                 sh 'yarn test'
+                echo result
             }
         }
         stage('Build') { 
