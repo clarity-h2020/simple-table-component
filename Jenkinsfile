@@ -5,6 +5,9 @@ pipeline {
             args '-p 3001:3000'
         }
     }
+    environment {
+        CI = 'true' 
+    }
     stages {
         stage('Install') {
             steps {
@@ -20,25 +23,6 @@ pipeline {
             steps {
                 sh 'yarn build'
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'One way or another, I have finished'
-            
-        }
-        success {
-            echo 'I succeeeded!'
-        }
-        unstable {
-            echo 'I am unstable :/'
-        }
-        failure {
-            echo 'I failed :('
-        }
-        changed {
-            echo 'Things were different before...'
         }
     }
 
