@@ -5,7 +5,6 @@ pipeline {
             args '-p 3001:3000'
         }
     }
-    
     stages {
         stage('Install') {
             steps {
@@ -13,11 +12,8 @@ pipeline {
             }
         }
         stage('Test') { 
-
             steps {
                 sh 'yarn test'
-                def result = sh returnStatus: true
-                echo result
             }
         }
         stage('Build') { 
@@ -26,4 +22,28 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            echo 'One way or another, I have finished'
+            
+        }
+        success {
+            echo 'I succeeeded!'
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'I failed :('
+        }
+        changed {
+            echo 'Things were different before...'
+        }
+    }
+
 }
+
+
+
+//def result = sh returnStatus: true
