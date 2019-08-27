@@ -13,9 +13,10 @@ pipeline {
             }
         }
         stage('Test') { 
-            def result = sh returnStatus: true
+
             steps {
                 sh 'yarn test'
+                def result = sh returnStatus: true
                 echo result
             }
         }
