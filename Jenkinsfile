@@ -25,9 +25,4 @@ pipeline {
             }
         }
     }
-
 }
-
-
-
-//def result = sh returnStatus: true
