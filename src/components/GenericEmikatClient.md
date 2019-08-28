@@ -2,7 +2,15 @@
 ```js
 import GenericEmikatTable from './../components/GenericEmikatTable';
 import GlobalErrorBoundary from './../components/GlobalErrorBoundary';
-import emikatCredentials from '../__fixtures__/emikatCredentials.js';
+/**
+ * @type {Object[]}
+ */
+var emikatCredentials = undefined;
+
+import('../__fixtures__/emikatCredentials.js').then(
+    ({module}) => { emikatCredentials = module.default; },
+    (error) => { log.info('emikatCredentials.js is not present, skipping remote API tests'); }
+);
 
 <GlobalErrorBoundary>
     <GenericEmikatClient

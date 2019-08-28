@@ -6,16 +6,10 @@ import log from 'loglevel';
 import GenericEmikatClient from '../components/GenericEmikatClient.js';
 import GenericEmikatTable from './../components/GenericEmikatTable';
 
-/**
- * @type {String}
- */
-import emikatCredentials from '../__fixtures__/emikatCredentials.js';
-
-
 describe('EMIKAT API tests with authentication', () => {
 
     // skip tests if local credentials file is not available
-    if (!emikatCredentials || emikatCredentials === undefined) {
+    if (!process.env.EMIKAT_CREDENTIALS) {
         it.only('no emikatCredentials.js fixture found, skipping remote EMIKAT API tests', () => {
             log.warn('no emikatCredentials.js fixture found, skipping remote EMIKAT API tests');
         });
@@ -26,7 +20,7 @@ describe('EMIKAT API tests with authentication', () => {
         ReactDOM.render(
             <GenericEmikatClient
                 emikatUrl={'https://service.emikat.at/EmiKatTst/api/scenarios/2846/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/data?rownum=100'}
-                emikatCredentials={emikatCredentials}
+                emikatCredentials={process.env.EMIKAT_CREDENTIALS}
                 render={GenericEmikatTable}>
             </GenericEmikatClient>
             , div);

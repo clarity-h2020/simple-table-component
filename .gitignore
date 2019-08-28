@@ -1,9 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
 
 # testing
 /coverage
@@ -24,10 +22,6 @@ yarn-error.log*
 
 # cypress
 /cypress
-
-# private fixtures
-/src/__fixtures__/csisHeaders.js
-/src/__fixtures__/emikatCredentials.js
 
 # styleguide
 styleguide
