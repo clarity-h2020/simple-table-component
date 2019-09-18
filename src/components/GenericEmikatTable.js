@@ -8,7 +8,7 @@
  * ***************************************************
  */
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // Import React Table
@@ -37,7 +37,7 @@ import {EMIKATHelpers} from  'csis-helpers-js';
 const GenericEmikatTable = ({ data, isFetching, generateColumns }) => {
 
     //useEffect(() => { console.log('data:' + data + ' / isFetching: ' + isFetching) }, [data, isFetching]);
-    useEffect(() => console.log(data + 'value changed!'), [data]);
+    //useEffect(() => console.log(data + 'value changed!'), [data]);
 
     return (
         <ReactTable

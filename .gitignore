@@ -25,3 +25,4 @@ yarn-error.log*
 
 # styleguide
 styleguide
+/src/__fixtures__/emikatCredentials.js
