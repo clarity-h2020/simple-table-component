@@ -43,9 +43,12 @@ const GenericCsisClient = ({ CsisUrl, CsisCredentials, render: CsisVisualisation
 
   /**
    * Create Hook to load data from remote API when one of props CsisUrl or CsisCredentials changes
-   * 
+   * The Effect Hook lets you perform side effects in function components. 
+   * Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects. 
+   * If you’re familiar with React class lifecycle methods, you can think of useEffect Hook as componentDidMount, componentDidUpdate, and componentWillUnmount combined.
    */
   useEffect(() => {
+     // Effect callbacks are synchronous to prevent race conditions. Put the async function inside!
     let ignore = false;
 
     const fetchData = async () => {
@@ -55,6 +58,10 @@ const GenericCsisClient = ({ CsisUrl, CsisCredentials, render: CsisVisualisation
         // and the effect would be used when *state* changes (not what we want)
         setCsisData((state) => ({ ...state, isFetching: true }));
         const response = await CSISHelpers.fetchData(CsisUrl, CsisCredentials);
+
+        // the functional update form (here implemented as arrow function) of setState lets us specify how the state needs to change without referencing the current state.
+        // The function will receive the previous value, and return an updated value. We call it 'd' instead of data.
+        // Therefore we don't need data and users in the list of dependencies but just data.url :o
 
         if (!ignore) {
           //console.log(JSON.stringify(response));

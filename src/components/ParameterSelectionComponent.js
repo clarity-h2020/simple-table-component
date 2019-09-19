@@ -26,7 +26,17 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
    *  3) Instead of using a function to render dynamic children ("render props"), we use standard JSX composition in props! See https://americanexpress.io/faccs-are-an-antipattern/
    */
 
-  const [state, setState] = useState({ ...emikatParameters, emissionScenarioDisabled: emikatParameters.timePeriod === EMIKATHelpers.TIME_PERIOD_VALUES[0] ? true : false });
+  // useState returns an array with 2 elements, and we’re using **ES6 destructuring** to assign names to them
+  /**
+   * You might be wondering: why is useState not named createState instead?
+   * “Create” wouldn’t be quite accurate because the state is only created the first time our component renders. 
+   * During the next renders, useState gives us the current state. Otherwise it wouldn’t be “state” at all! 
+   * There’s also a reason why Hook names always start with use. 
+   */
+  // You can think of effects as a combination of componentDidMount() and componentDidUpdate() of class-based components.
+  // In this case, I want it to run just once, so I pass both a function and an empty array. 
+  // The array argument tells the Hook to apply the effect (i.e., run the function) only if the state variables listed in the array are changed.
+  const [state, setState] = useState({ ...emikatParameters});
   const [emikatUrl, setEmikatUrl] = useState(parametriseEmikatTemplateUrl(emikatTemplateUrl, emikatParameters));
 
   function handleChange(event) {
@@ -34,15 +44,27 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
     const tmpState = { ...state, [event.target.name]: event.target.value };
     log.debug(tmpState);
 
-    // set emission scenario to baseline
-    if (tmpState.timePeriod === EMIKATHelpers.TIME_PERIOD_VALUES[0]) {
+    // don't allow the user to select time period baseline when emission scenario is not baseline
+    if (event.target.name === 'timePeriod' && event.target.value === EMIKATHelpers.TIME_PERIOD_VALUES[0]) {
       tmpState.emissionScenario = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0];
-      tmpState.emissionScenarioDisabled = true;
-    } else {
-      tmpState.emissionScenarioDisabled = false;
     }
 
-    setState(tmpState); 
+    if (event.target.name === 'timePeriod' && event.target.value !== EMIKATHelpers.TIME_PERIOD_VALUES[0] 
+    && tmpState.emissionScenario === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]){
+      tmpState.emissionScenario = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1];
+    }
+
+    // if user selects
+    if (event.target.name === 'emissionScenario' && event.target.value === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]){
+      tmpState.timePeriod = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0];
+    }
+
+    if (event.target.name === 'emissionScenario' && event.target.value !== EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0] 
+    && tmpState.timePeriod === EMIKATHelpers.TIME_PERIOD_VALUES[0]){
+      tmpState.timePeriod = EMIKATHelpers.TIME_PERIOD_VALUES[1];
+    }
+
+    setState(tmpState);
     setEmikatUrl(parametriseEmikatTemplateUrl(emikatTemplateUrl, tmpState));
   }
 
@@ -56,35 +78,41 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
     return EMIKATHelpers.addEmikatParameters(emikatTemplateUrl, parametersMap);
   }
 
-
-  return (
-    <>
-      <div>
-        <label htmlFor="timePeriod"> Time Period </label>
-        <select id="timePeriod" name="timePeriod" onChange={handleChange} value={state.timePeriod}>
-          <option value={EMIKATHelpers.TIME_PERIOD_VALUES[0]}>Baseline</option>
-          <option value={EMIKATHelpers.TIME_PERIOD_VALUES[1]}>2011 - 2040</option>
-          <option value={EMIKATHelpers.TIME_PERIOD_VALUES[2]}>2041 - 2070</option>
-          <option value={EMIKATHelpers.TIME_PERIOD_VALUES[3]}>2071 - 2100</option>
-        </select>
-        <label htmlFor="emissionScenario"> Emission Scenario </label>
-        <select id="emissionScenario" name="emissionScenario" onChange={handleChange} value={state.emissionScenario} disabled={state.emissionScenarioDisabled}>
-          <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]}>Baseline</option>
-          <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1]}>RCP 2.6</option>
-          <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[2]}>RCP 4.5</option>
-          <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[3]}>RCP 8.5</option>
-        </select>
-        <label htmlFor="eventFrequency"> Event Frequency </label>
-        <select id="eventFrequency" name="eventFrequency" onChange={handleChange} value={state.eventFrequency}>
-          <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]}</option>
-          <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[1]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[1]}</option>
-          <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[2]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[2]}</option>
-        </select>
-      </div>
-
-      <EmikatClientComponent emikatUrl={emikatUrl} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
-    </>
-  );
+  if (emikatUrl && emikatCredentials && EmikatVisualisationComponent && emikatCredentials !== undefined && emikatCredentials !== null) {
+    return (
+      <>
+        <div>
+          <label htmlFor="timePeriod"> Time Period </label>
+          <select id="timePeriod" name="timePeriod" onChange={handleChange} value={state.timePeriod}>
+            <option value={EMIKATHelpers.TIME_PERIOD_VALUES[0]}>Baseline</option>
+            <option value={EMIKATHelpers.TIME_PERIOD_VALUES[1]}>2011 - 2040</option>
+            <option value={EMIKATHelpers.TIME_PERIOD_VALUES[2]}>2041 - 2070</option>
+            <option value={EMIKATHelpers.TIME_PERIOD_VALUES[3]}>2071 - 2100</option>
+          </select>
+          <label htmlFor="emissionScenario"> Emission Scenario </label>
+          <select id="emissionScenario" name="emissionScenario" onChange={handleChange} value={state.emissionScenario}>
+            <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]}>Baseline</option>
+            <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1]}>RCP 2.6</option>
+            <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[2]}>RCP 4.5</option>
+            <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[3]}>RCP 8.5</option>
+          </select>
+          <label htmlFor="eventFrequency"> Event Frequency </label>
+          <select id="eventFrequency" name="eventFrequency" onChange={handleChange} value={state.eventFrequency}>
+            <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]}</option>
+            <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[1]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[1]}</option>
+            <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[2]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[2]}</option>
+          </select>
+        </div>
+        {/* 
+        OK, but how does the EmikatVisualisationComponent get it's props? -> From EmikatClientComponent, not from the outside!
+        Passing dynamic props from parent to children  is not as straightforward as one might imagine. See https://stackoverflow.com/a/32371612
+      */}
+        <EmikatClientComponent emikatUrl={emikatUrl} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
+      </>);
+  } else {
+    // wor but with warning: Failed prop type: The prop `emikatCredentials` is marked as required in `ParameterSelectionComponent`, but its value is `null`.
+    return <div>Loading...</div>;
+  }
 }
 
 /**
