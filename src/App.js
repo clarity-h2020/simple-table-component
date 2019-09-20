@@ -51,7 +51,7 @@ function App(props) {
   // Code Splitting test
   // https://reactjs.org/docs/code-splitting.html
   const RiskAndImpactTable = React.lazy(() => import('./components/RiskAndImpactTable.js'));
-
+  const ExposureTable = React.lazy(() => import('./components/ExposureTable.js'));
 
   // useState returns an array with 2 elements, and we’re using **ES6 destructuring** to assign names to them
   const [emikatCredentials, setEmikatCredentials] = useState();
@@ -151,6 +151,16 @@ function App(props) {
                 }}
                 emikatCredentials={emikatCredentials}>
               </RiskAndImpactTable>
+            </Suspense>
+          </Route>
+          <Route path={`${process.env.PUBLIC_URL}/ExposureTable`}>
+            <Suspense fallback={<WaitingComponent />}>
+              <ExposureTable
+                emikatParameters={{
+                  emikatStudyId: queryParams.emikat_id
+                }}
+                emikatCredentials={emikatCredentials}>
+              </ExposureTable>
             </Suspense>
           </Route>
           {/*<!-- 
