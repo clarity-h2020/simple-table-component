@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter, Switch} from "react-router-dom";
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 import App from './App';
-import GlobalErrorBoundary from './components/GlobalErrorBoundary';
 
 ReactDOM.render(
-  <GlobalErrorBoundary>
-    <App />
-  </GlobalErrorBoundary>,
+  <main>
+    <BrowserRouter>
+    <Switch>
+      <App />
+      </Switch>
+    </BrowserRouter>
+  </main>,
   document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

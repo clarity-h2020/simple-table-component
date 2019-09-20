@@ -11,9 +11,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 //import log from 'loglevel';
-//import {EMIKATHelpers} from 'csis-helpers-js';
-import GenericEmikatClient from './../components/GenericEmikatClient';
-import GenericEmikatTable from './../components/GenericEmikatClient';
+import GenericEmikatClient from './GenericEmikatClient.js';
+import GenericEmikatTable from './GenericEmikatClient.js';
 import { EMIKATHelpers } from 'csis-helpers-js';
 import log from 'loglevel';
 
@@ -68,12 +67,13 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
     setEmikatUrl(parametriseEmikatTemplateUrl(emikatTemplateUrl, tmpState));
   }
 
-  function parametriseEmikatTemplateUrl(emikatTemplateUrl, state) {
+  function parametriseEmikatTemplateUrl(emikatTemplateUrl, parameters) {
     const parametersMap = new Map(
-      [[EMIKATHelpers.EMIKAT_STUDY_ID, state.emikatStudyId],
-      [EMIKATHelpers.TIME_PERIOD, state.timePeriod],
-      [EMIKATHelpers.EMISSIONS_SCENARIO, state.emissionScenario],
-      [EMIKATHelpers.EVENT_FREQUENCY, state.eventFrequency]]
+      [[EMIKATHelpers.EMIKAT_STUDY_ID, parameters.emikatStudyId],
+      [EMIKATHelpers.EMIKAT_STUDY_VARIANT, parameters.studyVariant],
+      [EMIKATHelpers.TIME_PERIOD, parameters.timePeriod],
+      [EMIKATHelpers.EMISSIONS_SCENARIO, parameters.emissionScenario],
+      [EMIKATHelpers.EVENT_FREQUENCY, parameters.eventFrequency]]
     );
     return EMIKATHelpers.addEmikatParameters(emikatTemplateUrl, parametersMap);
   }
@@ -130,7 +130,9 @@ ParameterSelectionComponent.propTypes = {
   * EMIKAT Parameters
   */
   emikatParameters: PropTypes.exact({
-    emikatStudyId: PropTypes.number.isRequired,
+    //emikatStudyId: PropTypes.number.isRequired,
+    emikatStudyId: PropTypes.string.isRequired, // yes, should be number but the effort is justed wasted if we retrieve it from query params and need to convert it to number
+    studyVariant: PropTypes.string,
     timePeriod: PropTypes.oneOf(EMIKATHelpers.TIME_PERIOD_VALUES),
     emissionScenario: PropTypes.oneOf(EMIKATHelpers.EMISSIONS_SCENARIO_VALUES),
     eventFrequency: PropTypes.oneOf(EMIKATHelpers.EVENT_FREQUENCY_VALUES),
@@ -156,7 +158,8 @@ ParameterSelectionComponent.defaultProps = {
 
   emikatTemplateUrl: 'https://service.emikat.at/EmiKatTst/api/',
   emikatParameters: {
-    emikatStudyId: -1,
+    emikatStudyId: undefined,
+    studyVariant: EMIKATHelpers.STUDY_VARIANT_VALUES[0],
     timePeriod: EMIKATHelpers.TIME_PERIOD_VALUES[0],
     emissionScenario: EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0],
     eventFrequency: EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]

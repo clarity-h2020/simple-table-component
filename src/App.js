@@ -8,20 +8,15 @@
  * ***************************************************
  */
 
-import React, { useEffect, useState, Suspense } from 'react';
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import React, { useEffect, useState, Suspense, Switch, Fragment} from 'react';
+import { withRouter, Route } from "react-router-dom";
 import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 import log from 'loglevel';
 
+import { CSISRemoteHelpers, CSISHelpers } from 'csis-helpers-js'
+import GlobalErrorBoundary from './components/commons/GlobalErrorBoundary.js';
 
-//import GenericEmikatTable from "./components/GenericEmikatTable"; // -> Lazy
-import { CSISRemoteHelpers, CSISHelpers, EMIKATHelpers } from 'csis-helpers-js'
-
-import GenericEmikatClient from './components/GenericEmikatClient';
-import GlobalErrorBoundary from './components/GlobalErrorBoundary';
-//import emikatCredentials from './__fixtures__/emikatCredentials.js';
-//import ParameterSelectionComponent from "./components/ParameterSelectionComponent";
 
 import logo from './logo.svg';
 import './App.css';
@@ -36,35 +31,35 @@ log.enableAll();
  * A functional component is just a plain JavaScript function which accepts props as an argument and returns a React element. 
  */
 function App(props) {
+  //log.debug(`App props: ${JSON.stringify(props)}`);
 
   /**
      * Query params extracted from CSIS Helpers. See /examples and /fixtures/csisHelpers.json
      */
-  var queryParams;
+  var queryParams = { ...CSISHelpers.defaultQueryParams};
 
   // get actual query params from query string ....
   if (props.location && props.location.search) {
     // copy default query params and extend using spread operator :o
-    queryParams = { ...CSISHelpers.defaultQueryParams, ...queryString.parse(props.location.search) };
+    queryParams = { ...queryParams, ...queryString.parse(props.location.search) };
   } else {
     log.warn('no query parameters found, showing empty table!')
   }
 
   // Code Splitting test
   // https://reactjs.org/docs/code-splitting.html
-  const GenericEmikatTable = React.lazy(() => import('./components/GenericEmikatTable.js'));
-  const ParameterSelectionComponent = React.lazy(() => import('./components/ParameterSelectionComponent.js'));
+  const RiskAndImpactTable = React.lazy(() => import('./components/RiskAndImpactTable.js'));
 
 
   // useState returns an array with 2 elements, and we’re using **ES6 destructuring** to assign names to them
   const [emikatCredentials, setEmikatCredentials] = useState();
-  const [emikatTemplateUrl, setEmikatTemplateUrl] = useState(`https://service.emikat.at/EmiKatTst/api/scenarios/2846/feature/view.2974/table/data?rownum=100&filter=STUDY_VARIANT%3D%27BASELINE%27&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27&filter=SZ_ID%3D${EMIKATHelpers.EMIKAT_STUDY_ID}`);
-
 
   /**
    * The Effect Hook lets you perform side effects in function components. 
    * Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects. 
    * If you’re familiar with React class lifecycle methods, you can think of useEffect Hook as componentDidMount, componentDidUpdate, and componentWillUnmount combined.
+   * 
+   * TODO: here we could fetch the EMIKAT URL from the Data Package instead of hardcoding it in the specifiy Table Components. Probably YAGNI ...
    */
   useEffect(() => {
     // Effect callbacks are synchronous to prevent race conditions. Put the async function inside!
@@ -85,7 +80,7 @@ function App(props) {
       } catch (error) {
         console.error('error caught in fetchEmikatCredentials', error);
 
-        // this hack does not work: https://github.com/facebook/react/issues/14981#issuecomment-468460187
+        // hacketyhack: https://github.com/facebook/react/issues/14981#issuecomment-468460187
         setEmikatCredentials(() => {
           throw error;
         });
@@ -110,77 +105,55 @@ function App(props) {
     }
   }, [props.location]);*/
 
-  /**
-   * Handles the onChange event in the url input field ...
-   * @param {string} value 
-   */
-  function handleChange(value) {
-    setEmikatTemplateUrl(value);
-  }
-
-  if (emikatCredentials) {
+  function WaitingComponent() {
     return (
       <GlobalErrorBoundary>
-        <main>
-          <BrowserRouter>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Switch>
-                <Route exact path={`${process.env.PUBLIC_URL}/SimpleTable/`}>
-                  <label htmlFor="emikatTemplateUrl"> Time Period </label>
-                  <input size="200" value={emikatTemplateUrl} onChange={e => handleChange(e.target.value)} />
-                  <ParameterSelectionComponent
-                    emikatTemplateUrl={emikatTemplateUrl}
-                    emikatParameters={{
-                      emikatStudyId: 2846,
-                      timePeriod: EMIKATHelpers.TIME_PERIOD_VALUES[0],
-                      emissionScenario: EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0],
-                      eventFrequency: EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]
-                    }}
-                    emikatCredentials={emikatCredentials}
-                    client={GenericEmikatClient}
-                    render={GenericEmikatTable}>
-                  </ParameterSelectionComponent>
-                </Route>
-                <Route>
-                  <div className="App">
-                    <header className="App-header">
-                      <img src={logo} className="App-logo" alt="logo" />
-                      <p>
-                        Edit <code>src/App.js</code> and save to reload.
-        </p>
-                      <a
-                        className="App-link"
-                        href="https://reactjs.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Learn React
-        </a>
-                    </header>
-                    { /* React ...props syntax:
-      ...data instead of data={data.users}, 
-      https://www.robinwieruch.de/react-pass-props-to-component/#react-props-syntax-spread-rest*/ }
-
-
-                  </div>
-                </Route>
-              </Switch>
-            </Suspense>
-          </BrowserRouter>
-        </main>
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>Loading Table Component</p>
+          </header>
+        </div>
       </GlobalErrorBoundary>
     );
-  } else {
+  }
 
+  if (!queryParams || !queryParams.emikat_id) {
+    log.debug(JSON.stringify(queryParams));
     return (
-      <GlobalErrorBoundary><div className="App">
+      <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>Loading Table Component</p>
-
+          <h2>Table Component not initilaised correctly</h2>
+          <p>Query Parametes, e.g. <i>emikat_id</i> missing!</p>
         </header>
       </div>
-      </GlobalErrorBoundary>);
+    );
+  }
+  else if (emikatCredentials) {
+    return (
+        <Fragment>       
+        <Route exact path={process.env.PUBLIC_URL} component={WaitingComponent}/>
+        <Route exact path={`${process.env.PUBLIC_URL}/RiskAndImpactTable`}>
+          <Suspense fallback={<WaitingComponent />}>
+            <RiskAndImpactTable
+              emikatParameters={{
+                emikatStudyId: queryParams.emikat_id,
+                studyVariant: queryParams.study_variant,
+                timePeriod: queryParams.time_period,
+                emissionScenario: queryParams.emssion_scenario,
+                eventFrequency: queryParams.event_frequency
+              }}
+              emikatCredentials={emikatCredentials}>
+            </RiskAndImpactTable>
+          </Suspense>
+        </Route>
+        
+        <Route exact path={`${process.env.PUBLIC_URL}/terror`} component={WaitingComponent}/>
+        </Fragment>
+    );
+  } else {
+    return (<WaitingComponent />);
   }
 }
 
@@ -191,6 +164,8 @@ function App(props) {
  * 3) get **Data Package** from study group node and extract emikat **resources**
  *    - filter by **EU-GL step** obtained from query param or seamless.js iFrame communication
  *    - `taxonomy_term--service_type` from tags with value 'EMIKAT' (?)
- *    - refence type with value `EMIKAT:table`? from references array?
+ *    - reference type with value `EMIKAT:table`? from references array?
  */
-export default App;
+
+// yes, withRouter is needed if we want access the dynamically injected props.location outside of a <Route> :-/ 
+export default withRouter(App);

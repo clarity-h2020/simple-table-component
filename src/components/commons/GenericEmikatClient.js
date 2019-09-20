@@ -12,7 +12,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import log from 'loglevel';
 import {EMIKATHelpers} from 'csis-helpers-js';
-import GenericEmikatTable from './../components/GenericEmikatTable'
+import GenericEmikatTable from './GenericEmikatTable.js'
 
 /**
  * A Generic EMIKAT Client that understands the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html)

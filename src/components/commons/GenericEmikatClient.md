@@ -1,9 +1,9 @@
 ### Remote Population Exposure Table
 See [Exposure data (Population) calculated from EMIKAT:](https://github.com/clarity-h2020/csis/wiki/Services-endpoints-\(used-by-CSIS\)#exposure-data-population-calculated-from-emikat)
 ```js
-import GenericEmikatTable from './../components/GenericEmikatTable';
-import GlobalErrorBoundary from './../components/GlobalErrorBoundary';
-import emikatCredentials from '../__fixtures__/emikatCredentials.js';
+import GenericEmikatTable from './GenericEmikatTable';
+import GlobalErrorBoundary from './GlobalErrorBoundary';
+import emikatCredentials from './../../__fixtures__/emikatCredentials.js';
 /**
  * @type {Object[]}
  */

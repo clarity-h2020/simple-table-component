@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import log from 'loglevel';
 
 import {CSISHelpers} from 'csis-helpers-js';
-import GenericCsisTable from './GenericCsisTable'
+import GenericCsisTable from './GenericCsisTable.js'
 
 /**
  * A Generic CSIS Client that understands the [CSIS/Drupal JSON API](https://csis.myclimateservice.eu/jsonapi/)

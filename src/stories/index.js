@@ -6,7 +6,7 @@ import { linkTo } from '@storybook/addon-links';
 
 import { Button, Welcome } from '@storybook/react/demo';
 
-import GenericEmikatTable from './../components/GenericEmikatTable';
+import GenericEmikatTable from '../components/commons/GenericEmikatTable';
 import users from './users.json'
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);

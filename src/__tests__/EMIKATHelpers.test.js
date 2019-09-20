@@ -12,8 +12,8 @@ import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {EMIKATHelpers} from 'csis-helpers-js';
-import GenericEmikatTable from './../components/GenericEmikatTable';
-import {CSISHelpers} from 'csis-helpers-js';
+import GenericEmikatTable from './../components/commons/GenericEmikatTable';
+
 //import {create, router, defaults, rewriter} from 'json-server';
 import express from 'express'
 import populationExposure from './../__fixtures__/tab.CLY_EL_POPULATION_INTERPOLATED.2016.json';

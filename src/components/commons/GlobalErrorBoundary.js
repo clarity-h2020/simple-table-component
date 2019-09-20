@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import log from 'loglevel';
 
 /**
  * Error boundaries are React components that catch JavaScript errors anywhere in their 

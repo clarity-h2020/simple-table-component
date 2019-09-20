@@ -3,8 +3,8 @@ import React from 'react';
 
 import log from 'loglevel';
 
-import GenericEmikatClient from '../components/GenericEmikatClient.js';
-import GenericEmikatTable from './../components/GenericEmikatTable';
+import GenericEmikatClient from './../components/commons/GenericEmikatClient.js';
+import GenericEmikatTable from './../components/commons/GenericEmikatTable.js';
 
 describe('EMIKAT API tests with authentication', () => {
 
