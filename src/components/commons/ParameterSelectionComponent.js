@@ -45,20 +45,20 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
 
     // don't allow the user to select time period baseline when emission scenario is not baseline
     if (event.target.name === 'timePeriod' && event.target.value === EMIKATHelpers.TIME_PERIOD_VALUES[0]) {
-      tmpState.emissionScenario = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0];
+      tmpState.emissionsScenario = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0];
     }
 
     if (event.target.name === 'timePeriod' && event.target.value !== EMIKATHelpers.TIME_PERIOD_VALUES[0] 
-    && tmpState.emissionScenario === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]){
-      tmpState.emissionScenario = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1];
+    && tmpState.emissionsScenario === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]){
+      tmpState.emissionsScenario = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1];
     }
 
     // if user selects
-    if (event.target.name === 'emissionScenario' && event.target.value === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]){
+    if (event.target.name === 'emissionsScenario' && event.target.value === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]){
       tmpState.timePeriod = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0];
     }
 
-    if (event.target.name === 'emissionScenario' && event.target.value !== EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0] 
+    if (event.target.name === 'emissionsScenario' && event.target.value !== EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0] 
     && tmpState.timePeriod === EMIKATHelpers.TIME_PERIOD_VALUES[0]){
       tmpState.timePeriod = EMIKATHelpers.TIME_PERIOD_VALUES[1];
     }
@@ -70,9 +70,9 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
   function parametriseEmikatTemplateUrl(emikatTemplateUrl, parameters) {
     const parametersMap = new Map(
       [[EMIKATHelpers.EMIKAT_STUDY_ID, parameters.emikatStudyId],
-      [EMIKATHelpers.EMIKAT_STUDY_VARIANT, parameters.studyVariant],
+      [EMIKATHelpers.STUDY_VARIANT, parameters.studyVariant],
       [EMIKATHelpers.TIME_PERIOD, parameters.timePeriod],
-      [EMIKATHelpers.EMISSIONS_SCENARIO, parameters.emissionScenario],
+      [EMIKATHelpers.EMISSIONS_SCENARIO, parameters.emissionsScenario],
       [EMIKATHelpers.EVENT_FREQUENCY, parameters.eventFrequency]]
     );
     return EMIKATHelpers.addEmikatParameters(emikatTemplateUrl, parametersMap);
@@ -89,8 +89,8 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
             <option value={EMIKATHelpers.TIME_PERIOD_VALUES[2]}>2041 - 2070</option>
             <option value={EMIKATHelpers.TIME_PERIOD_VALUES[3]}>2071 - 2100</option>
           </select>
-          <label htmlFor="emissionScenario"> Emission Scenario </label>
-          <select id="emissionScenario" name="emissionScenario" onChange={handleChange} value={state.emissionScenario}>
+          <label htmlFor="emissionsScenario"> Emissions Scenario </label>
+          <select id="emissionsScenario" name="emissionsScenario" onChange={handleChange} value={state.emissionsScenario}>
             <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]}>Baseline</option>
             <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1]}>RCP 2.6</option>
             <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[2]}>RCP 4.5</option>
@@ -134,7 +134,7 @@ ParameterSelectionComponent.propTypes = {
     emikatStudyId: PropTypes.string.isRequired, // yes, should be number but the effort is justed wasted if we retrieve it from query params and need to convert it to number
     studyVariant: PropTypes.string,
     timePeriod: PropTypes.oneOf(EMIKATHelpers.TIME_PERIOD_VALUES),
-    emissionScenario: PropTypes.oneOf(EMIKATHelpers.EMISSIONS_SCENARIO_VALUES),
+    emissionsScenario: PropTypes.oneOf(EMIKATHelpers.EMISSIONS_SCENARIO_VALUES),
     eventFrequency: PropTypes.oneOf(EMIKATHelpers.EVENT_FREQUENCY_VALUES),
   }).isRequired,
 
@@ -161,7 +161,7 @@ ParameterSelectionComponent.defaultProps = {
     emikatStudyId: undefined,
     studyVariant: EMIKATHelpers.STUDY_VARIANT_VALUES[0],
     timePeriod: EMIKATHelpers.TIME_PERIOD_VALUES[0],
-    emissionScenario: EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0],
+    emissionsScenario: EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0],
     eventFrequency: EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]
   },
   emikatCredentials: null,

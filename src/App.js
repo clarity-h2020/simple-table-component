@@ -8,8 +8,8 @@
  * ***************************************************
  */
 
-import React, { useEffect, useState, Suspense, Switch, Fragment} from 'react';
-import { withRouter, Route } from "react-router-dom";
+import React, { useEffect, useState, Suspense } from 'react';
+import { Switch, BrowserRouter, Route } from "react-router-dom";
 import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 import log from 'loglevel';
@@ -32,11 +32,13 @@ log.enableAll();
  */
 function App(props) {
   //log.debug(`App props: ${JSON.stringify(props)}`);
+  // Yes, this is **e,mpty** in react DEV mode! :-(
+  //log.debug('process.env.PUBLIC_URL:' + process.env.PUBLIC_URL);
 
   /**
      * Query params extracted from CSIS Helpers. See /examples and /fixtures/csisHelpers.json
      */
-  var queryParams = { ...CSISHelpers.defaultQueryParams};
+  var queryParams = { ...CSISHelpers.defaultQueryParams };
 
   // get actual query params from query string ....
   if (props.location && props.location.search) {
@@ -67,7 +69,7 @@ function App(props) {
     const fetchEmikatCredentials = async () => {
       try {
         const theEmikatCredentials = await CSISRemoteHelpers.getEmikatCredentialsFromCsis();
-        log.debug(`Emikat Credentials retrieved: ${theEmikatCredentials}`);
+        //log.debug(`Emikat Credentials retrieved: ${theEmikatCredentials}`);
         setEmikatCredentials(theEmikatCredentials);
         /*response.catch((error) => {
           console.error('error caught in promise', error);
@@ -132,25 +134,31 @@ function App(props) {
   }
   else if (emikatCredentials) {
     return (
-        <Fragment>       
-        <Route exact path={process.env.PUBLIC_URL} component={WaitingComponent}/>
-        <Route exact path={`${process.env.PUBLIC_URL}/RiskAndImpactTable`}>
-          <Suspense fallback={<WaitingComponent />}>
-            <RiskAndImpactTable
-              emikatParameters={{
-                emikatStudyId: queryParams.emikat_id,
-                studyVariant: queryParams.study_variant,
-                timePeriod: queryParams.time_period,
-                emissionScenario: queryParams.emssion_scenario,
-                eventFrequency: queryParams.event_frequency
-              }}
-              emikatCredentials={emikatCredentials}>
-            </RiskAndImpactTable>
-          </Suspense>
-        </Route>
-        
-        <Route exact path={`${process.env.PUBLIC_URL}/terror`} component={WaitingComponent}/>
-        </Fragment>
+      <BrowserRouter>
+        {/*<!-- BrowserRouter/Switch already defined in index.js otherwise propos.location would be undefined.
+        Why do we have to repeat it here? I don't know but if we don't do it Switch will not work an show ll routes
+      -->*/}
+        <Switch>
+          <Route path={`${process.env.PUBLIC_URL}/RiskAndImpactTable`}>
+            <Suspense fallback={<WaitingComponent />}>
+              <RiskAndImpactTable
+                emikatParameters={{
+                  emikatStudyId: queryParams.emikat_id,
+                  studyVariant: queryParams.study_variant,
+                  timePeriod: queryParams.time_period,
+                  emissionsScenario: queryParams.emissions_scenario,
+                  eventFrequency: queryParams.event_frequency
+                }}
+                emikatCredentials={emikatCredentials}>
+              </RiskAndImpactTable>
+            </Suspense>
+          </Route>
+          {/*<!-- 
+          Yes, the order **is** important, especially in DEV mode when is ${process.env.PUBLIC_URL} is **empty**!
+          See also https://github.com/clarity-h2020/simple-table-component/issues/6#issuecomment-533518226 -->*/}
+          <Route exact path={process.env.PUBLIC_URL} component={WaitingComponent} />
+        </Switch>
+      </BrowserRouter >
     );
   } else {
     return (<WaitingComponent />);
@@ -166,6 +174,4 @@ function App(props) {
  *    - `taxonomy_term--service_type` from tags with value 'EMIKAT' (?)
  *    - reference type with value `EMIKAT:table`? from references array?
  */
-
-// yes, withRouter is needed if we want access the dynamically injected props.location outside of a <Route> :-/ 
-export default withRouter(App);
+export default App;
