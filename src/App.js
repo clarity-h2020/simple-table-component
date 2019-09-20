@@ -50,9 +50,10 @@ function App(props) {
 
   // Code Splitting test
   // https://reactjs.org/docs/code-splitting.html
-  const RiskAndImpactTable = React.lazy(() => import('./components/RiskAndImpactTable.js'));
+  const GenericTable = React.lazy(() => import('./components/GenericTable.js'));
   const ExposureTable = React.lazy(() => import('./components/ExposureTable.js'));
-
+  const RiskAndImpactTable = React.lazy(() => import('./components/RiskAndImpactTable.js'));
+  
   // useState returns an array with 2 elements, and we’re using **ES6 destructuring** to assign names to them
   const [emikatCredentials, setEmikatCredentials] = useState();
 
@@ -166,7 +167,20 @@ function App(props) {
           {/*<!-- 
           Yes, the order **is** important, especially in DEV mode when is ${process.env.PUBLIC_URL} is **empty**!
           See also https://github.com/clarity-h2020/simple-table-component/issues/6#issuecomment-533518226 -->*/}
-          <Route exact path={process.env.PUBLIC_URL} component={WaitingComponent} />
+          <Route exact path={process.env.PUBLIC_URL}>
+          <Suspense fallback={<WaitingComponent />}>
+              <GenericTable
+                emikatParameters={{
+                  emikatStudyId: queryParams.emikat_id,
+                  studyVariant: queryParams.study_variant,
+                  timePeriod: queryParams.time_period,
+                  emissionsScenario: queryParams.emissions_scenario,
+                  eventFrequency: queryParams.event_frequency
+                }}
+                emikatCredentials={emikatCredentials}>
+              </GenericTable>
+            </Suspense>
+          </Route>
         </Switch>
       </BrowserRouter >
     );

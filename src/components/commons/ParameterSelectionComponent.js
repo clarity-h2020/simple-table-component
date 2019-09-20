@@ -8,7 +8,7 @@
  * ***************************************************
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import log from 'loglevel';
 import GenericEmikatClient from './GenericEmikatClient.js';
@@ -25,18 +25,31 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
    *  3) Instead of using a function to render dynamic children ("render props"), we use standard JSX composition in props! See https://americanexpress.io/faccs-are-an-antipattern/
    */
 
+  //log.debug(JSON.stringify(emikatParameters));
+
   // useState returns an array with 2 elements, and we’re using **ES6 destructuring** to assign names to them
   /**
    * You might be wondering: why is useState not named createState instead?
    * “Create” wouldn’t be quite accurate because the state is only created the first time our component renders. 
    * During the next renders, useState gives us the current state. Otherwise it wouldn’t be “state” at all! 
    * There’s also a reason why Hook names always start with use. 
+   * 
+   * Believe it t or not: The argument passed to useState is the initial state much like setting state in constructor for a class component 
+   * and isn't used to update the state on re-render, see https://stackoverflow.com/a/54866051
+   * 
    */
   // You can think of effects as a combination of componentDidMount() and componentDidUpdate() of class-based components.
   // In this case, I want it to run just once, so I pass both a function and an empty array. 
   // The array argument tells the Hook to apply the effect (i.e., run the function) only if the state variables listed in the array are changed.
-  const [state, setState] = useState({ ...emikatParameters});
-  const [emikatUrl, setEmikatUrl] = useState(parametriseEmikatTemplateUrl(emikatTemplateUrl, emikatParameters));
+  const [state, setState] = useState({ ...emikatParameters });
+  //const [emikatUrl, setEmikatUrl] = useState(parametriseEmikatTemplateUrl(emikatTemplateUrl, emikatParameters));
+
+  // needed to force a re-render when props change (from outside) OMG!
+  // See https://stackoverflow.com/questions/54865764/react-usestate-does-not-reload-state-from-props#comment96502928_54866051
+  // This ridiculously complex statement is needed to update the component when emikatStudyId changes. React FxCK yeah!
+  useEffect(() => {
+    setState((state) => ({ ...state, emikatStudyId: emikatParameters.emikatStudyId }))
+  }, [emikatParameters.emikatStudyId]);
 
   function handleChange(event) {
     // See https://medium.com/better-programming/handling-multiple-form-inputs-in-react-c5eb83755d15
@@ -48,23 +61,23 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
       tmpState.emissionsScenario = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0];
     }
 
-    if (event.target.name === 'timePeriod' && event.target.value !== EMIKATHelpers.TIME_PERIOD_VALUES[0] 
-    && tmpState.emissionsScenario === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]){
+    if (event.target.name === 'timePeriod' && event.target.value !== EMIKATHelpers.TIME_PERIOD_VALUES[0]
+      && tmpState.emissionsScenario === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]) {
       tmpState.emissionsScenario = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1];
     }
 
     // if user selects
-    if (event.target.name === 'emissionsScenario' && event.target.value === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]){
+    if (event.target.name === 'emissionsScenario' && event.target.value === EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]) {
       tmpState.timePeriod = EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0];
     }
 
-    if (event.target.name === 'emissionsScenario' && event.target.value !== EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0] 
-    && tmpState.timePeriod === EMIKATHelpers.TIME_PERIOD_VALUES[0]){
+    if (event.target.name === 'emissionsScenario' && event.target.value !== EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]
+      && tmpState.timePeriod === EMIKATHelpers.TIME_PERIOD_VALUES[0]) {
       tmpState.timePeriod = EMIKATHelpers.TIME_PERIOD_VALUES[1];
     }
 
     setState(tmpState);
-    setEmikatUrl(parametriseEmikatTemplateUrl(emikatTemplateUrl, tmpState));
+    //setEmikatUrl(parametriseEmikatTemplateUrl(emikatTemplateUrl, tmpState));
   }
 
   function parametriseEmikatTemplateUrl(emikatTemplateUrl, parameters) {
@@ -78,7 +91,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
     return EMIKATHelpers.addEmikatParameters(emikatTemplateUrl, parametersMap);
   }
 
-  if (emikatUrl && emikatCredentials && EmikatVisualisationComponent && emikatCredentials !== undefined && emikatCredentials !== null) {
+  if (emikatTemplateUrl && emikatCredentials && EmikatVisualisationComponent && emikatCredentials !== undefined && emikatCredentials !== null) {
     return (
       <>
         <div>
@@ -107,7 +120,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
         OK, but how does the EmikatVisualisationComponent get it's props? -> From EmikatClientComponent, not from the outside!
         Passing dynamic props from parent to children  is not as straightforward as one might imagine. See https://stackoverflow.com/a/32371612
       */}
-        <EmikatClientComponent emikatUrl={emikatUrl} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
+        <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
       </>);
   } else {
     // wor but with warning: Failed prop type: The prop `emikatCredentials` is marked as required in `ParameterSelectionComponent`, but its value is `null`.
