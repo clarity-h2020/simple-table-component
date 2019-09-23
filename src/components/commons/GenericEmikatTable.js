@@ -8,8 +8,9 @@
  * ***************************************************
  */
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import log from 'loglevel';
 
 // Import React Table
 import ReactTable from 'react-table';
@@ -35,16 +36,17 @@ import {EMIKATHelpers} from  'csis-helpers-js';
  * @visibleName Generic EMIKAT Table
  */
 const GenericEmikatTable = ({ data, isFetching, generateColumns }) => {
+    log.info('creating new GenericEmikatTable');
 
     //useEffect(() => { console.log('data:' + data + ' / isFetching: ' + isFetching) }, [data, isFetching]);
-    useEffect(() => console.log(data + 'value changed!'), [data]);
+    //useEffect(() => console.log(data + 'value changed!'), [data]);
 
     return (
         <ReactTable
             data={data.rows}
             columns={generateColumns(data.columnnames)}
             loading={isFetching}
-            defaultPageSize={10}
+            defaultPageSize={15}
         />);
 }
 

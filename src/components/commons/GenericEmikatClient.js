@@ -12,7 +12,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import log from 'loglevel';
 import {EMIKATHelpers} from 'csis-helpers-js';
-import GenericEmikatTable from './../components/GenericEmikatTable'
+import GenericEmikatTable from './GenericEmikatTable.js'
 
 /**
  * A Generic EMIKAT Client that understands the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html)
@@ -56,15 +56,20 @@ const GenericEmikatClient = ({ emikatUrl, emikatCredentials, render: EmikatVisua
         const response = await EMIKATHelpers.fetchData(emikatUrl, emikatCredentials);
 
         if (!ignore) {
-          //qconsole.log(JSON.stringify(response));
+          //console.log(JSON.stringify(response));
+          log.debug(`emikatUrl: ${emikatUrl} | emikatCredentials: ${emikatCredentials}`);
           setEmikatData((state) => ({...state, data: response.data, isFetching: false }));
         } else {
-          log.warn('props changed during async call, ignoring');
+          log.warn(`props emikatUrl ${emikatUrl} or emikatCredentials ${emikatCredentials} changed during async call, ignoring`);
         }
       } catch (error) {
         log.error('error caught in fetchData', error);
         //setEmikatData((state) => ({...state,  data: { rows: [], columnnames: [] }, isFetching: false }));
-        throw error;
+        
+        // hacketyhack ....
+        setEmikatData(() => {
+          throw error;
+        });
       }
     };
 
@@ -74,13 +79,13 @@ const GenericEmikatClient = ({ emikatUrl, emikatCredentials, render: EmikatVisua
      * clean up function which runs when a component unmounts
      */
     return function cleanup() {
-      console.log('cleanup data fetching');
+      log.debug('cleanup data fetching');
       ignore = true;
     };
 
   }, [emikatUrl, emikatCredentials]);
 
-
+  // this is how we pass props to the `render` JSX Component:
   return (<EmikatVisualisationComponent data={emikatData.data} isFetching={false} />);
 }
 
@@ -95,7 +100,7 @@ GenericEmikatClient.propTypes = {
    */
   emikatUrl: PropTypes.string.isRequired,
   /**
-   * The Basic Auth crendetials
+   * The Basic Auth credentials
    */
   emikatCredentials: PropTypes.string.isRequired,
 

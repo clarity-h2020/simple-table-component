@@ -13,40 +13,48 @@ import PropTypes from "prop-types";
  * 
  * see https://stackoverflow.com/questions/46589819/disable-error-overlay-in-development-mode/47398520
  * 
+ * **WARNING:** Error boundaries catch errors during rendering, in lifecycle methods, and in constructors of the whole tree below them. But not in event, effects, async, etc.
+ * 
+ * TODO: convert to functional component
+ * 
  */
 class GlobalErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error:undefined, info:undefined };
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true };
+    return { hasError: true, error:error};
   }
 
   componentDidCatch(error, info) {
-    console.error(error);
+    //log.error('error in componentDidCatch', error);
   }
 
   reset = () => {
-    this.setState({ hasError: false });
+    this.setState({ hasError: false, error:undefined });
   }
 
   // https://danburzo.github.io/react-recipes/recipes/error-boundaries.html
   render() {
     //console.log('hasError:' + this.state.hasError);
     if (this.state.hasError) {
+      //log.warn('error detected');
       return (
         <>
-        <div>
-          <h1>Meteorite Explorer encountered an error! Oh My!</h1>
-        </div>
-        <button onClick={this.reset}>Try again</button>
+          <div>
+            <h1>Table data could not be loaded.</h1>
+            <p>The technical error messsge is: {this.state.error.message}</p>
+            <p><strong>You are probably not logged in CSIS. Please visist <a href="https://csis.myclimateservice.eu/">https://csis.myclimateservice.eu/</a></strong></p>
+          </div>
+          <button onClick={this.reset}>Try again</button>
         </>
       );
+    } else {
+      //log.debug('no error detected');
+      return this.props.children;
     }
-    
-    return this.props.children; 
   }
 }
 
