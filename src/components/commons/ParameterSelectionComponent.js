@@ -10,14 +10,15 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-//import log from 'loglevel';
+import log from 'loglevel';
 import GenericEmikatClient from './GenericEmikatClient.js';
 import GenericEmikatTable from './GenericEmikatClient.js';
 import { EMIKATHelpers } from 'csis-helpers-js';
-import log from 'loglevel';
 
+const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emikatCredentials, selectionUiVisible, client: EmikatClientComponent, render: EmikatVisualisationComponent }) => {
 
-const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emikatCredentials, client: EmikatClientComponent, render: EmikatVisualisationComponent }) => {
+  log.info('creating new ParameterSelectionComponent');
+
   /**
    *  1) Either we pass just `props` and access `props.render` or
    *  we need to add `render` to the **destructuring assignment** of the argument `props`.
@@ -92,38 +93,42 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
   }
 
   if (emikatTemplateUrl && emikatCredentials && EmikatVisualisationComponent && emikatCredentials !== undefined && emikatCredentials !== null) {
-    return (
-      <>
-        <div>
-          <label htmlFor="timePeriod"> Time Period </label>
-          <select id="timePeriod" name="timePeriod" onChange={handleChange} value={state.timePeriod}>
-            <option value={EMIKATHelpers.TIME_PERIOD_VALUES[0]}>Baseline</option>
-            <option value={EMIKATHelpers.TIME_PERIOD_VALUES[1]}>2011 - 2040</option>
-            <option value={EMIKATHelpers.TIME_PERIOD_VALUES[2]}>2041 - 2070</option>
-            <option value={EMIKATHelpers.TIME_PERIOD_VALUES[3]}>2071 - 2100</option>
-          </select>
-          <label htmlFor="emissionsScenario"> Emissions Scenario </label>
-          <select id="emissionsScenario" name="emissionsScenario" onChange={handleChange} value={state.emissionsScenario}>
-            <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]}>Baseline</option>
-            <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1]}>RCP 2.6</option>
-            <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[2]}>RCP 4.5</option>
-            <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[3]}>RCP 8.5</option>
-          </select>
-          <label htmlFor="eventFrequency"> Event Frequency </label>
-          <select id="eventFrequency" name="eventFrequency" onChange={handleChange} value={state.eventFrequency}>
-            <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]}</option>
-            <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[1]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[1]}</option>
-            <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[2]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[2]}</option>
-          </select>
-        </div>
-        {/* 
+    if (selectionUiVisible === true) {
+      return (
+        <>
+          <div>
+            <label htmlFor="timePeriod"> Time Period </label>
+            <select id="timePeriod" name="timePeriod" onChange={handleChange} value={state.timePeriod}>
+              <option value={EMIKATHelpers.TIME_PERIOD_VALUES[0]}>Baseline</option>
+              <option value={EMIKATHelpers.TIME_PERIOD_VALUES[1]}>2011 - 2040</option>
+              <option value={EMIKATHelpers.TIME_PERIOD_VALUES[2]}>2041 - 2070</option>
+              <option value={EMIKATHelpers.TIME_PERIOD_VALUES[3]}>2071 - 2100</option>
+            </select>
+            <label htmlFor="emissionsScenario"> Emissions Scenario </label>
+            <select id="emissionsScenario" name="emissionsScenario" onChange={handleChange} value={state.emissionsScenario}>
+              <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0]}>Baseline</option>
+              <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[1]}>RCP 2.6</option>
+              <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[2]}>RCP 4.5</option>
+              <option value={EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[3]}>RCP 8.5</option>
+            </select>
+            <label htmlFor="eventFrequency"> Event Frequency </label>
+            <select id="eventFrequency" name="eventFrequency" onChange={handleChange} value={state.eventFrequency}>
+              <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]}</option>
+              <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[1]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[1]}</option>
+              <option value={EMIKATHelpers.EVENT_FREQUENCY_VALUES[2]}>{EMIKATHelpers.EVENT_FREQUENCY_VALUES[2]}</option>
+            </select>
+          </div>
+          {/* 
         OK, but how does the EmikatVisualisationComponent get it's props? -> From EmikatClientComponent, not from the outside!
         Passing dynamic props from parent to children  is not as straightforward as one might imagine. See https://stackoverflow.com/a/32371612
       */}
-        <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
-      </>);
+          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
+        </>);
+    } else {
+      return (<EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />);
+    }
   } else {
-    // wor but with warning: Failed prop type: The prop `emikatCredentials` is marked as required in `ParameterSelectionComponent`, but its value is `null`.
+    // works but with warning: Failed prop type: The prop `emikatCredentials` is marked as required in `ParameterSelectionComponent`, but its value is `null`.
     return <div>Loading...</div>;
   }
 }
@@ -157,6 +162,16 @@ ParameterSelectionComponent.propTypes = {
   emikatCredentials: PropTypes.string.isRequired,
 
   /**
+   * Whether the parameter selection user interface  is shown or not
+   */
+  selectionUiVisible: PropTypes.boolean,
+
+  /**
+   * The client component used to communicate with the backend
+   */
+  client: PropTypes.elementType,
+
+  /**
    * The actual visualisation component to be rendered
    */
   render: PropTypes.elementType
@@ -178,6 +193,7 @@ ParameterSelectionComponent.defaultProps = {
     eventFrequency: EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]
   },
   emikatCredentials: null,
+  selectionUiVisible: false,
   client: GenericEmikatClient,
   render: GenericEmikatTable
 };

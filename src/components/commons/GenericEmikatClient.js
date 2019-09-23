@@ -85,7 +85,7 @@ const GenericEmikatClient = ({ emikatUrl, emikatCredentials, render: EmikatVisua
 
   }, [emikatUrl, emikatCredentials]);
 
-
+  // this is how we pass props to the `render` JSX Component:
   return (<EmikatVisualisationComponent data={emikatData.data} isFetching={false} />);
 }
 
@@ -100,7 +100,7 @@ GenericEmikatClient.propTypes = {
    */
   emikatUrl: PropTypes.string.isRequired,
   /**
-   * The Basic Auth crendetials
+   * The Basic Auth credentials
    */
   emikatCredentials: PropTypes.string.isRequired,
 

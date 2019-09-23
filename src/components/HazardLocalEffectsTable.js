@@ -7,20 +7,20 @@ import ParameterSelectionComponent from './commons/ParameterSelectionComponent.j
 import GenericEmikatTable from './commons/GenericEmikatTable.js';
 
 /**
- * The Risk and Impact Table!
+ * The HazardLocalEffect Table!
  * 
  * TODO: RA/IA API URL currently hardcoded and not loaded from Data Package, see ${emikatTemplateUrl}.
  * YAGNI: Questionable if it is really worth the effort to mess with the Drupal APi and extract the URLs.
  * 
  * Test with emikat_id=2846
- * view.2975 = Risk and Impact
+ * view.2974 = HazardLocalEffects
  * 
  * @param {*} props 
  * @see https://github.com/clarity-h2020/emikat/issues/9
  * @see https://csis.myclimateservice.eu/node/1356
  */
-const RiskAndImpactTable = (props) => {
-    log.info('creating new RiskAndImpactTable');
+const HazardLocalEffectsTable = (props) => {
+    log.info('creating new HazardLocalEffectsTable');
     return (
     <ParameterSelectionComponent
       {...props}
@@ -30,4 +30,5 @@ const RiskAndImpactTable = (props) => {
     </ParameterSelectionComponent>);
   };
 
-  export default RiskAndImpactTable;
+  export default HazardLocalEffectsTable;
+

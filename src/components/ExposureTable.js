@@ -1,4 +1,5 @@
 import React from 'react';
+import log from 'loglevel';
 
 import {EMIKATHelpers} from 'csis-helpers-js';
 import GenericEmikatClient from './commons/GenericEmikatClient.js';
@@ -17,7 +18,7 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  * @see https://csis.myclimateservice.eu/node/754
  */
 const ExposureTable = (props) => {
-
+    log.info('creating new ExposureTable');
     const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/data?rownum=1000`;
     const emikatUrl = EMIKATHelpers.addEmikatId(emikatTemplateUrl, props.emikatParameters.emikatStudyId);
 

@@ -51,9 +51,11 @@ function App(props) {
   // Code Splitting test
   // https://reactjs.org/docs/code-splitting.html
   const GenericTable = React.lazy(() => import('./components/GenericTable.js'));
+  const CharacteriseHazardTable = React.lazy(() => import('./components/CharacteriseHazardTable.js'));
+  const HazardLocalEffectsTable = React.lazy(() => import('./components/HazardLocalEffectsTable.js'));
   const ExposureTable = React.lazy(() => import('./components/ExposureTable.js'));
   const RiskAndImpactTable = React.lazy(() => import('./components/RiskAndImpactTable.js'));
-  
+
   // useState returns an array with 2 elements, and we’re using **ES6 destructuring** to assign names to them
   const [emikatCredentials, setEmikatCredentials] = useState();
 
@@ -140,7 +142,41 @@ function App(props) {
         Why do we have to repeat it here? I don't know but if we don't do it Switch will not work an show ll routes
       -->*/}
         <Switch>
-          <Route path={`${process.env.PUBLIC_URL}/RiskAndImpactTable`}>
+          <Route exact path={`${process.env.PUBLIC_URL}/CharacteriseHazardTable`}>
+            <Suspense fallback={<WaitingComponent />}>
+              <CharacteriseHazardTable
+                emikatParameters={{
+                  emikatStudyId: queryParams.emikat_id
+                }}
+                emikatCredentials={emikatCredentials}>
+              </CharacteriseHazardTable>
+            </Suspense>
+          </Route>
+          <Route exact path={`${process.env.PUBLIC_URL}/HazardLocalEffectsTable`}>
+            <Suspense fallback={<WaitingComponent />}>
+              <HazardLocalEffectsTable
+                emikatParameters={{
+                  emikatStudyId: queryParams.emikat_id,
+                  studyVariant: queryParams.study_variant,
+                  timePeriod: queryParams.time_period,
+                  emissionsScenario: queryParams.emissions_scenario,
+                  eventFrequency: queryParams.event_frequency
+                }}
+                emikatCredentials={emikatCredentials}>
+              </HazardLocalEffectsTable>
+            </Suspense>
+          </Route>
+          <Route exact path={`${process.env.PUBLIC_URL}/ExposureTable`}>
+            <Suspense fallback={<WaitingComponent />}>
+              <ExposureTable
+                emikatParameters={{
+                  emikatStudyId: queryParams.emikat_id
+                }}
+                emikatCredentials={emikatCredentials}>
+              </ExposureTable>
+            </Suspense>
+          </Route>
+          <Route exact path={`${process.env.PUBLIC_URL}/RiskAndImpactTable`}>
             <Suspense fallback={<WaitingComponent />}>
               <RiskAndImpactTable
                 emikatParameters={{
@@ -154,21 +190,12 @@ function App(props) {
               </RiskAndImpactTable>
             </Suspense>
           </Route>
-          <Route path={`${process.env.PUBLIC_URL}/ExposureTable`}>
-            <Suspense fallback={<WaitingComponent />}>
-              <ExposureTable
-                emikatParameters={{
-                  emikatStudyId: queryParams.emikat_id
-                }}
-                emikatCredentials={emikatCredentials}>
-              </ExposureTable>
-            </Suspense>
-          </Route>
+
           {/*<!-- 
           Yes, the order **is** important, especially in DEV mode when is ${process.env.PUBLIC_URL} is **empty**!
           See also https://github.com/clarity-h2020/simple-table-component/issues/6#issuecomment-533518226 -->*/}
           <Route exact path={process.env.PUBLIC_URL}>
-          <Suspense fallback={<WaitingComponent />}>
+            <Suspense fallback={<WaitingComponent />}>
               <GenericTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
