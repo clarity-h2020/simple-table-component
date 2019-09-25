@@ -129,7 +129,7 @@ function App(props) {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Table Component not initilaised correctly</h2>
+          <h2>ERROR: Table Component not initialised correctly</h2>
           <p>Query Parametes, e.g. <i>emikat_id</i> missing!</p>
         </header>
       </div>
