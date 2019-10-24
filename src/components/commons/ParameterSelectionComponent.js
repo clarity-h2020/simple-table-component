@@ -14,6 +14,7 @@ import log from 'loglevel';
 import GenericEmikatClient from './GenericEmikatClient.js';
 import GenericEmikatTable from './GenericEmikatClient.js';
 import { EMIKATHelpers } from 'csis-helpers-js';
+import DownloadButton from './DownloadButton.js';
 
 const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emikatCredentials, selectionUiVisible, client: EmikatClientComponent, render: EmikatVisualisationComponent }) => {
 
@@ -47,7 +48,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
 
   // needed to force a re-render when props change (from outside) OMG!
   // See https://stackoverflow.com/questions/54865764/react-usestate-does-not-reload-state-from-props#comment96502928_54866051
-  // This ridiculously complex statement is needed to update the component when emikatStudyId changes. React FxCK yeah!
+  // This statement is needed to update the component when emikatStudyId changes...
   useEffect(() => {
     setState((state) => ({ ...state, emikatStudyId: emikatParameters.emikatStudyId }))
   }, [emikatParameters.emikatStudyId]);
@@ -55,7 +56,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
   function handleChange(event) {
     // See https://medium.com/better-programming/handling-multiple-form-inputs-in-react-c5eb83755d15
     const tmpState = { ...state, [event.target.name]: event.target.value };
-    log.debug(tmpState);
+    //log.debug(tmpState);
 
     // don't allow the user to select time period baseline when emission scenario is not baseline
     if (event.target.name === 'timePeriod' && event.target.value === EMIKATHelpers.TIME_PERIOD_VALUES[0]) {
@@ -84,6 +85,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
   function parametriseEmikatTemplateUrl(emikatTemplateUrl, parameters) {
     const parametersMap = new Map(
       [[EMIKATHelpers.EMIKAT_STUDY_ID, parameters.emikatStudyId],
+      [EMIKATHelpers.DATA_FORMAT, parameters.dataFormat],
       [EMIKATHelpers.STUDY_VARIANT, parameters.studyVariant],
       [EMIKATHelpers.TIME_PERIOD, parameters.timePeriod],
       [EMIKATHelpers.EMISSIONS_SCENARIO, parameters.emissionsScenario],
@@ -119,10 +121,11 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
             </select>
           </div>
           {/* 
-        OK, but how does the EmikatVisualisationComponent get it's props? -> From EmikatClientComponent, not from the outside!
-        Passing dynamic props from parent to children  is not as straightforward as one might imagine. See https://stackoverflow.com/a/32371612
-      */}
+            OK, but how does the EmikatVisualisationComponent get it's props? -> From EmikatClientComponent, not from the outside!
+            Passing dynamic props from parent to children  is not as straightforward as one might imagine. See https://stackoverflow.com/a/32371612
+          */}
           <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
+          <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters = {state} emikatCredentials = {emikatCredentials}/>
         </>);
     } else {
       return (<EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />);
@@ -149,7 +152,8 @@ ParameterSelectionComponent.propTypes = {
   */
   emikatParameters: PropTypes.exact({
     //emikatStudyId: PropTypes.number.isRequired,
-    emikatStudyId: PropTypes.string.isRequired, // yes, should be number but the effort is justed wasted if we retrieve it from query params and need to convert it to number
+    emikatStudyId: PropTypes.string.isRequired, // yes, should be number but the effort is wasted if we retrieve it from query params and need to convert it to number
+    dataFormat: PropTypes.string,
     studyVariant: PropTypes.string,
     timePeriod: PropTypes.oneOf(EMIKATHelpers.TIME_PERIOD_VALUES),
     emissionsScenario: PropTypes.oneOf(EMIKATHelpers.EMISSIONS_SCENARIO_VALUES),
@@ -157,14 +161,14 @@ ParameterSelectionComponent.propTypes = {
   }).isRequired,
 
   /**
-   * The Basic Auth crendetials
+   * The Basic Auth credentials
    */
   emikatCredentials: PropTypes.string.isRequired,
 
   /**
-   * Whether the parameter selection user interface  is shown or not
+   * Whether the parameter selection user interface  is shown or not.
    */
-  selectionUiVisible: PropTypes.boolean,
+  selectionUiVisible: PropTypes.bool,
 
   /**
    * The client component used to communicate with the backend
@@ -187,6 +191,7 @@ ParameterSelectionComponent.defaultProps = {
   emikatTemplateUrl: 'https://service.emikat.at/EmiKatTst/api/',
   emikatParameters: {
     emikatStudyId: undefined,
+    dataFormat: EMIKATHelpers.DATA_FORMAT_VALUES[0],
     studyVariant: EMIKATHelpers.STUDY_VARIANT_VALUES[0],
     timePeriod: EMIKATHelpers.TIME_PERIOD_VALUES[0],
     emissionsScenario: EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0],
@@ -197,5 +202,9 @@ ParameterSelectionComponent.defaultProps = {
   client: GenericEmikatClient,
   render: GenericEmikatTable
 };
+
+// hacketyhack:
+DownloadButton.propTypes = ParameterSelectionComponent.propTypes;
+DownloadButton.defaultProps = ParameterSelectionComponent.defaultProps;
 
 export default ParameterSelectionComponent

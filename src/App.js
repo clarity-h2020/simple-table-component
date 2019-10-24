@@ -146,7 +146,8 @@ function App(props) {
             <Suspense fallback={<WaitingComponent />}>
               <CharacteriseHazardTable
                 emikatParameters={{
-                  emikatStudyId: queryParams.emikat_id
+                  emikatStudyId: queryParams.emikat_id,
+                  dataFormat: queryParams.data_format,
                 }}
                 emikatCredentials={emikatCredentials}>
               </CharacteriseHazardTable>
@@ -157,12 +158,14 @@ function App(props) {
               <HazardLocalEffectsTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
+                  dataFormat: queryParams.data_format,
                   studyVariant: queryParams.study_variant,
                   timePeriod: queryParams.time_period,
                   emissionsScenario: queryParams.emissions_scenario,
-                  eventFrequency: queryParams.event_frequency
+                  eventFrequency: queryParams.event_frequency,
                 }}
-                emikatCredentials={emikatCredentials}>
+                emikatCredentials={emikatCredentials}
+                selectionUiVisible={true}>
               </HazardLocalEffectsTable>
             </Suspense>
           </Route>
@@ -181,6 +184,7 @@ function App(props) {
               <RiskAndImpactTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
+                  dataFormat: queryParams.data_format,
                   studyVariant: queryParams.study_variant,
                   timePeriod: queryParams.time_period,
                   emissionsScenario: queryParams.emissions_scenario,
@@ -199,6 +203,7 @@ function App(props) {
               <GenericTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
+                  dataFormat: queryParams.data_format,
                   studyVariant: queryParams.study_variant,
                   timePeriod: queryParams.time_period,
                   emissionsScenario: queryParams.emissions_scenario,
