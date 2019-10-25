@@ -213,7 +213,7 @@ function App(props) {
                   eventFrequency: queryParams.event_frequency
                 }}
                 emikatCredentials={emikatCredentials}
-                selectionUiVisible={false}>
+                selectionUiVisible={true}>
               </GenericTable>
             </Suspense>
           </Route>
