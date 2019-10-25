@@ -11,6 +11,7 @@
 import React, { useState, useEffect } from 'react';
 import log from 'loglevel';
 import { EMIKATHelpers } from 'csis-helpers-js';
+import FileSaver from 'file-saver';
 
 const DownloadButton = ({ emikatTemplateUrl, emikatParameters, emikatCredentials }) => {
 
@@ -21,14 +22,47 @@ const DownloadButton = ({ emikatTemplateUrl, emikatParameters, emikatCredentials
   // needed to force a re-render when props change (from outside) OMG!
   // See https://stackoverflow.com/questions/54865764/react-usestate-does-not-reload-state-from-props#comment96502928_54866051
   useEffect(() => {
-    log.error(emikatParameters);
-    setState((state) => ({ ...state, ...emikatParameters}))
+    setState((state) => ({ ...state, ...emikatParameters, buttonDisabled: false }))
   }, [emikatParameters]);
 
   function handleChange(event) {
-    // See https://medium.com/better-programming/handling-multiple-form-inputs-in-react-c5eb83755d15
+    console.debug(`changing data format to ${event.target.name} = ${event.target.value}`);
     const tmpState = { ...state, [event.target.name]: event.target.value };
     setState(tmpState);
+  }
+
+  function handleClick(event) {
+    // See https://medium.com/better-programming/handling-multiple-form-inputs-in-react-c5eb83755d15
+    console.debug(`downloading data in format ${state.dataFormat}`);
+    const emikatUrl = parametriseEmikatTemplateUrl(emikatTemplateUrl, state);
+
+    //setState(updatedEmikatParameters);
+
+    const fetchData = async () => {
+      try {
+        setState((state) => ({ ...state, buttonDisabled: true }));
+        // yes, here we use fetch because axios doe not support response.blob()
+        const response = await fetch(emikatUrl, { headers: { Authorization: emikatCredentials } });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok.', response);
+        }
+
+        const blob = await response.blob();
+        // TODO: constuct individual file name instead of 'data'.
+        const fileName = 'data.' + (state.dataFormat === 'data' ? 'json' : state.dataFormat);
+
+        log.debug(`saving data as ${fileName}`);
+        FileSaver.saveAs(blob, fileName);
+        setState((state) => ({ ...state, buttonDisabled: false }));
+
+      } catch (error) {
+        log.error('error caught in fetchData', error);
+        setState((state) => ({ ...state, buttonDisabled: false }));
+      }
+    };
+
+    fetchData();
   }
 
   function parametriseEmikatTemplateUrl(emikatTemplateUrl, parameters) {
@@ -44,9 +78,16 @@ const DownloadButton = ({ emikatTemplateUrl, emikatParameters, emikatCredentials
   }
 
   if (emikatTemplateUrl && emikatCredentials && emikatCredentials !== undefined && emikatCredentials !== null) {
-      return (
-        <a download rel="noopener noreferrer" target="_blank" href={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)}>{parametriseEmikatTemplateUrl(emikatTemplateUrl, state)}</a>);
-
+    return (
+      <div>
+        <label htmlFor="dataFormat"> Data Format: </label>
+        <select id="dataFormat" name="dataFormat" onChange={handleChange} value={state.dataFormat}>
+          <option value={EMIKATHelpers.DATA_FORMAT_VALUES[0]}>JSON</option>
+          <option value={EMIKATHelpers.DATA_FORMAT_VALUES[1]}>CSV</option>
+          <option value={EMIKATHelpers.DATA_FORMAT_VALUES[2]}>GeoJSON</option>
+        </select>&nbsp;&nbsp;
+        <button disabled={state.buttonDisabled} onClick={handleClick}>{state.buttonDisabled ? 'Downloading ...' : 'Download'}</button>
+      </div>);
   } else {
     // works but with warning: Failed prop type: The prop `emikatCredentials` is marked as required in `ParameterSelectionComponent`, but its value is `null`.
     return <div>Loading...</div>;

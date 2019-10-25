@@ -125,7 +125,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
             Passing dynamic props from parent to children  is not as straightforward as one might imagine. See https://stackoverflow.com/a/32371612
           */}
           <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
-          <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters = {state} emikatCredentials = {emikatCredentials}/>
+          <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters={state} emikatCredentials={emikatCredentials} />
         </>);
     } else {
       return (<EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />);

@@ -11,7 +11,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import log from 'loglevel';
-import {EMIKATHelpers} from 'csis-helpers-js';
+import { EMIKATHelpers } from 'csis-helpers-js';
 import GenericEmikatTable from './GenericEmikatTable.js'
 
 /**
@@ -58,14 +58,14 @@ const GenericEmikatClient = ({ emikatUrl, emikatCredentials, render: EmikatVisua
         if (!ignore) {
           //console.log(JSON.stringify(response));
           log.debug(`emikatUrl: ${emikatUrl} | emikatCredentials: ${emikatCredentials}`);
-          setEmikatData((state) => ({...state, data: response.data, isFetching: false }));
+          setEmikatData((state) => ({ ...state, data: response.data, isFetching: false }));
         } else {
           log.warn(`props emikatUrl ${emikatUrl} or emikatCredentials ${emikatCredentials} changed during async call, ignoring`);
         }
       } catch (error) {
         log.error('error caught in fetchData', error);
         //setEmikatData((state) => ({...state,  data: { rows: [], columnnames: [] }, isFetching: false }));
-        
+
         // hacketyhack ....
         setEmikatData(() => {
           throw error;

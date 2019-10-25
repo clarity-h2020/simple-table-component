@@ -1,7 +1,7 @@
 import React from 'react';
 import log from 'loglevel';
 
-import {EMIKATHelpers} from 'csis-helpers-js';
+import { EMIKATHelpers } from 'csis-helpers-js';
 import GenericEmikatClient from './commons/GenericEmikatClient.js';
 import ParameterSelectionComponent from './commons/ParameterSelectionComponent.js';
 import GenericEmikatTable from './commons/GenericEmikatTable.js';
@@ -20,13 +20,13 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  */
 const CharacteriseHazardTable = (props) => {
   log.info('creating new CharacteriseHazardTable');
-    return (
+  return (
     <ParameterSelectionComponent
       {...props}
-      emikatTemplateUrl={`https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_HAZARD_EVENTS_STUDY.2036/table/data?rownum=1000`}
+      emikatTemplateUrl={`https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_HAZARD_EVENTS_STUDY.2036/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000`}
       client={GenericEmikatClient}
       render={GenericEmikatTable}>
     </ParameterSelectionComponent>);
-  };
+};
 
-  export default CharacteriseHazardTable;
+export default CharacteriseHazardTable;
