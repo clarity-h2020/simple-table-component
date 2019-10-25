@@ -149,7 +149,8 @@ function App(props) {
                   emikatStudyId: queryParams.emikat_id,
                   dataFormat: queryParams.data_format,
                 }}
-                emikatCredentials={emikatCredentials}>
+                emikatCredentials={emikatCredentials}
+                selectionUiVisible={false}>
               </CharacteriseHazardTable>
             </Suspense>
           </Route>
@@ -165,7 +166,7 @@ function App(props) {
                   eventFrequency: queryParams.event_frequency,
                 }}
                 emikatCredentials={emikatCredentials}
-                selectionUiVisible={true}>
+                selectionUiVisible={false}>
               </HazardLocalEffectsTable>
             </Suspense>
           </Route>
@@ -175,7 +176,8 @@ function App(props) {
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id
                 }}
-                emikatCredentials={emikatCredentials}>
+                emikatCredentials={emikatCredentials}
+                selectionUiVisible={false}>
               </ExposureTable>
             </Suspense>
           </Route>
@@ -190,7 +192,8 @@ function App(props) {
                   emissionsScenario: queryParams.emissions_scenario,
                   eventFrequency: queryParams.event_frequency
                 }}
-                emikatCredentials={emikatCredentials}>
+                emikatCredentials={emikatCredentials}
+                selectionUiVisible={false}>
               </RiskAndImpactTable>
             </Suspense>
           </Route>
@@ -209,7 +212,8 @@ function App(props) {
                   emissionsScenario: queryParams.emissions_scenario,
                   eventFrequency: queryParams.event_frequency
                 }}
-                emikatCredentials={emikatCredentials}>
+                emikatCredentials={emikatCredentials}
+                selectionUiVisible={false}>
               </GenericTable>
             </Suspense>
           </Route>

@@ -128,7 +128,13 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
           <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters={state} emikatCredentials={emikatCredentials} />
         </>);
     } else {
-      return (<EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />);
+      return (
+        <>
+          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
+          <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters={state} emikatCredentials={emikatCredentials} />
+        </>
+      );
+
     }
   } else {
     // works but with warning: Failed prop type: The prop `emikatCredentials` is marked as required in `ParameterSelectionComponent`, but its value is `null`.
