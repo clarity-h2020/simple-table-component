@@ -174,7 +174,8 @@ function App(props) {
             <Suspense fallback={<WaitingComponent />}>
               <ExposureTable
                 emikatParameters={{
-                  emikatStudyId: queryParams.emikat_id
+                  emikatStudyId: queryParams.emikat_id,
+                  dataFormat: queryParams.data_format
                 }}
                 emikatCredentials={emikatCredentials}
                 selectionUiVisible={false}>
