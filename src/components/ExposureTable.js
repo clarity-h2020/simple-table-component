@@ -4,6 +4,7 @@ import log from 'loglevel';
 import { EMIKATHelpers } from 'csis-helpers-js';
 import GenericEmikatClient from './commons/GenericEmikatClient.js';
 import GenericEmikatTable from './commons/GenericEmikatTable.js';
+import ParameterSelectionComponent from './commons/ParameterSelectionComponent.js';
 
 /**
  * The ExposureTable
@@ -20,14 +21,14 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
 const ExposureTable = (props) => {
   log.info('creating new ExposureTable');
   const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000`;
-  const emikatUrl = EMIKATHelpers.addEmikatId(emikatTemplateUrl, props.emikatParameters.emikatStudyId);
 
   return (
-    <GenericEmikatClient
+    <ParameterSelectionComponent
       {...props}
-      emikatUrl={emikatUrl}
+      emikatTemplateUrl={emikatTemplateUrl}
+      client={GenericEmikatClient}
       render={GenericEmikatTable}>
-    </GenericEmikatClient>);
+    </ParameterSelectionComponent>);
 };
 
 export default ExposureTable;

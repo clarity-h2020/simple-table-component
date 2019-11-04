@@ -20,10 +20,12 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  */
 const CharacteriseHazardTable = (props) => {
   log.info('creating new CharacteriseHazardTable');
+  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_HAZARD_EVENTS_STUDY.2036/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000`;
+
   return (
     <ParameterSelectionComponent
       {...props}
-      emikatTemplateUrl={`https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_HAZARD_EVENTS_STUDY.2036/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000`}
+      emikatTemplateUrl={emikatTemplateUrl}
       client={GenericEmikatClient}
       render={GenericEmikatTable}>
     </ParameterSelectionComponent>);
