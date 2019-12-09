@@ -96,6 +96,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
 
   if (emikatTemplateUrl && emikatCredentials && EmikatVisualisationComponent && emikatCredentials !== undefined && emikatCredentials !== null) {
     if (selectionUiVisible === true) {
+      // remember: state = emikatParameters
       return (
         <>
           <div>

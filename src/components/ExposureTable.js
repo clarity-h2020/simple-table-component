@@ -3,7 +3,7 @@ import log from 'loglevel';
 
 import { EMIKATHelpers } from 'csis-helpers-js';
 import GenericEmikatClient from './commons/GenericEmikatClient.js';
-import GenericEmikatTable from './commons/GenericEmikatTable.js';
+import ExposureEmikatTable from './commons/ExposureEmikatTable.js';
 import ParameterSelectionComponent from './commons/ParameterSelectionComponent.js';
 
 /**
@@ -27,7 +27,7 @@ const ExposureTable = (props) => {
       {...props}
       emikatTemplateUrl={emikatTemplateUrl}
       client={GenericEmikatClient}
-      render={GenericEmikatTable}>
+      render={ExposureEmikatTable}>
     </ParameterSelectionComponent>);
 };
 
