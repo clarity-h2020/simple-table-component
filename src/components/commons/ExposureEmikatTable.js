@@ -16,8 +16,8 @@ import 'react-table/react-table.css';
 
 /**
  * An Exposure EMIKAT Table Component that understands the 'special' JSON format of the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html).
- * This component is currently not needed, as there are no customisations required.Furthermore, EMIKAT APIs allows to restrict the result ser to certain columns,
- * therefore thee actually no real need to overwrite generateColums. See also comments in HazardLocalEffectsTable.
+ * This component is currently not needed, as there are no customisations required. Furthermore, EMIKAT APIs allows to restrict the result to certain columns,
+ * therefore there is actually no real need to overwrite generateColums. See also comments in HazardLocalEffectsTable.
  * 
  * @param {GenericEmikatTableProps} props 
  * @version 0.1.0
