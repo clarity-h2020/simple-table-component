@@ -20,7 +20,7 @@ import ParameterSelectionComponent from './commons/ParameterSelectionComponent.j
  */
 const ExposureTable = (props) => {
   log.info('creating new ExposureTable');
-  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000&filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID}`;
+  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/${EMIKATHelpers.DATA_FORMAT}?rownum=100&filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID}`;
 
   return (
     <ParameterSelectionComponent
