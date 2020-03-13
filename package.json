@@ -50,7 +50,6 @@
     "@storybook/addon-links": "^5.2.8",
     "@storybook/addons": "^5.2.8",
     "@storybook/react": "^5.2.8",
-    "cypress": "^3.7.0",
     "express": "^4.17.1",
     "json-server": "^0.15.1",
     "react-styleguidist": "^10.2.1",
