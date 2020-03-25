@@ -14,6 +14,10 @@ import ReactDOM from 'react-dom';
 import {EMIKATHelpers} from 'csis-helpers-js';
 import GenericEmikatTable from './../components/commons/GenericEmikatTable';
 
+// see https://github.com/clarity-h2020/simple-table-component/issues/4#issuecomment-595115802
+import 'react-app-polyfill/ie9';
+import 'react-app-polyfill/stable';
+
 //import {create, router, defaults, rewriter} from 'json-server';
 import express from 'express'
 import populationExposure from './../__fixtures__/tab.CLY_EL_POPULATION_INTERPOLATED.2016.json';
@@ -23,12 +27,13 @@ var server;
 
 beforeAll(() => {
   console.log('beforeAll');
+  axios.defaults.adapter = require('axios/lib/adapters/http');
   // respond with "hello world" when a GET request is made to the homepage
   app.get('/EmiKatTst/api/scenarios/2846/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/data', function (req, res) {
     res.json(populationExposure);
   })
 
-  server = app.listen(31337, () => console.log('Example app listening on port 3000!'))
+  server = app.listen(31337, () => console.log('Example app listening on port 31337!'))
 });
 
 it ('tests JSON API', async (done) => {

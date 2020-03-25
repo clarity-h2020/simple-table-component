@@ -19,7 +19,7 @@ describe('EMIKAT API tests with authentication', () => {
         const div = document.createElement('div');
         ReactDOM.render(
             <GenericEmikatClient
-                emikatUrl={'https://service.emikat.at/EmiKatTst/api/scenarios/2846/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/data?rownum=100'}
+                emikatUrl={'https://service.emikat.at/EmiKatTst/api/scenarios/2846/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/data?rownum=1000'}
                 emikatCredentials={process.env.EMIKAT_CREDENTIALS}
                 render={GenericEmikatTable}>
             </GenericEmikatClient>

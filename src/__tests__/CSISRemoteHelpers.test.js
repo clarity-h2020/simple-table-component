@@ -8,12 +8,16 @@
  * ***************************************************
  */
 
- // OMG: Nee to duplicate tests, since we cannot export  them
-// See https://github.com/p-a-s-c-a-l
+ // OMG: Need to duplicate tests, since we cannot export  them
 
 
 import axios from 'axios';
 import log from 'loglevel';
+
+// see https://github.com/clarity-h2020/simple-table-component/issues/4#issuecomment-595115802
+import 'react-app-polyfill/ie9';
+import 'react-app-polyfill/stable';
+
 import { CSISRemoteHelpers,  CSISHelpers} from 'csis-helpers-js';
 
 import apiResponseStudy from './../__fixtures__/study.json';
@@ -24,6 +28,7 @@ log.enableAll();
  * Set auth headers for live API test
  */
 beforeAll(async (done) => {
+    axios.defaults.adapter = require('axios/lib/adapters/http');
     //axios.defaults.withCredentials = true;
     if (process.env.COOKIE && process.env.ORIGIN) {
         log.info('headers.js fixture found, executing remote API tests');

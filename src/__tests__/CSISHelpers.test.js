@@ -6,11 +6,17 @@ import apiResponseStudy from './../__fixtures__/study.json';
 import apiResponseDataPackage from './../__fixtures__/dataPackage.json';
 import apiResponseResources from './../__fixtures__/resources.json';
 import studyArea from './../__fixtures__/studyArea.json';
+// see https://github.com/clarity-h2020/simple-table-component/issues/4#issuecomment-595115802
+import 'react-app-polyfill/ie9';
+import 'react-app-polyfill/stable';
 
 const app = express();
 var server;
 
 beforeAll(() => {
+    // required because of https://github.com/clarity-h2020/simple-table-component/issues/4#issuecomment-603834161
+	axios.defaults.adapter = require('axios/lib/adapters/http');
+
     app.get('/jsonapi/group/study', function (req, res) {
         res.json(apiResponseStudy);
     });
@@ -31,13 +37,20 @@ beforeAll(() => {
         res.json(apiResponseResources);
     });
 
-    server = app.listen(31336, () => log.debug('Example app listening on port 31336!'))
+    server = app.listen(0, () => log.debug(`Example app listening on http://${server.address().address}:${server.address().port}`));
+	log.debug(`Example app listening on http://${server.address().address}:${server.address().port}`);
 });
 
 
+/**
+ * duplicate content
+ * we have exactly the same tests in map-component but we cannot reuse them in another project. :-(
+ */
 test('test extract study area from study json', async (done) => {
-    expect.assertions(5);
-    const response = await axios.get('http://localhost:31336/jsonapi/group/study?filter[id][condition][path]=id&filter[id][condition][operator]=%3D&filter[id][condition][value]=c3609e3e-f80f-482b-9e9f-3a26226a6859');
+    const url = `http://localhost:${server.address().port}/jsonapi/group/study?filter[id][condition][path]=id&filter[id][condition][operator]=%3D&filter[id][condition][value]=c3609e3e-f80f-482b-9e9f-3a26226a6859`;
+	// unbelievable: does not print to console. See https://github.com/facebook/jest/issues/2441
+	log.info(url);
+	const response = await axios.get(url);
     expect(response).toBeDefined();
     expect(response.data).toBeDefined();
     expect(response.data.data).toBeDefined();
