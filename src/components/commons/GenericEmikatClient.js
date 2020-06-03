@@ -27,7 +27,7 @@ import GenericEmikatTable from './GenericEmikatTable.js'
  * @visibleName Generic EMIKAT Client
  * @see GenericEmikatTable
  */
-const GenericEmikatClient = ({ emikatUrl, emikatCredentials, render: EmikatVisualisationComponent }) => {
+const GenericEmikatClient = ({ emikatUrl, emikatCredentials, render: EmikatVisualisationComponent, props}) => {
   /**
    *  1) Either we pass just `props` and access `props.render` or
    *  we need to add `render` to the **destructuring assignment** of the argument `props`.
@@ -86,11 +86,11 @@ const GenericEmikatClient = ({ emikatUrl, emikatCredentials, render: EmikatVisua
   }, [emikatUrl, emikatCredentials]);
 
   // this is how we pass props to the `render` JSX Component:
-  return (<EmikatVisualisationComponent data={emikatData.data} isFetching={false} />);
+  return (<EmikatVisualisationComponent data={emikatData.data} isFetching={false} {...props} />);
 }
 
 /**
- * GenericEmikatTable Prop Types
+ * GenericEmikatClient Prop Types
  * 
  * @typedef {Object} GenericEmikatTableProps
  */
@@ -107,19 +107,26 @@ GenericEmikatClient.propTypes = {
   /**
    * The actual visualisation component to be rendered
    */
-  render: PropTypes.elementType
+  render: PropTypes.elementType,
+
+  /**
+   * child props ....
+   */
+  props: PropTypes.object
+
 
 };
 
 /**
- * GenericEmikatTable Default Props
+ * GenericEmikatClient Default Props
  * @typedef {Object} GenericEmikatClientProps
  */
 GenericEmikatClient.defaultProps = {
 
   emikatUrl: 'https://service.emikat.at/EmiKatTst/api/',
   emikatCredentials: null,
-  render: GenericEmikatTable
+  render: GenericEmikatTable,
+  props: null
 };
 
 export default GenericEmikatClient

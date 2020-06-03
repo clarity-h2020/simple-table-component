@@ -71,7 +71,7 @@ function App(props) {
 
     const fetchEmikatCredentials = async () => {
       try {
-        const theEmikatCredentials = await CSISRemoteHelpers.getEmikatCredentialsFromCsis();
+        const theEmikatCredentials = await CSISRemoteHelpers.getEmikatCredentialsFromCsis(queryParams.host);
         //log.debug(`Emikat Credentials retrieved: ${theEmikatCredentials}`);
         setEmikatCredentials(theEmikatCredentials);
         /*response.catch((error) => {

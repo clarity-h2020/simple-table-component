@@ -1,10 +1,10 @@
 {
   "name": "simple-table-component",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "private": true,
   "dependencies": {
     "axios": "^0.19.2",
-    "csis-helpers-js": "https://github.com/clarity-h2020/csis-helpers-js.git#semver:^0.5.4",
+    "csis-helpers-js": "https://github.com/clarity-h2020/csis-helpers-js.git#semver:^0.6.0",
     "file-saver": "^2.0.2",
     "history": "^4.10.1",
     "loglevel": "^1.6.7",

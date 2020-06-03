@@ -24,6 +24,8 @@ const HazardLocalEffectsTable = (props) => {
 	/**
    * o.k., we could handle this columns stuff in a generic way and include it in csis-helpers-js as a *special case* of 
    * EMIKAT URI parametrization, but hey, KISS and YAGNI anyone? ATM column names are not treated as $variables anyway. 
+   * 
+   * Inconsistency alert: `EVENT_FREQUENCY` is called `Frequence` in EE API :-(
    * */
 	const columns =
 		'&column=GRID_ID&column=STUDY_VARIANT&column=TIME_PERIOD&column=EMISSIONS_SCENARIO&column=EVENT_FREQUENCY&column=T_MRT&column=T_UTCI&column=T_A&column=DISCOMFORT_LEVEL';

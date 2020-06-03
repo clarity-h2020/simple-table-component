@@ -35,8 +35,9 @@ import {EMIKATHelpers} from  'csis-helpers-js';
  * @component
  * @visibleName Generic EMIKAT Table
  */
-const GenericEmikatTable = ({ data, isFetching, generateColumns }) => {
+const GenericEmikatTable = ({ data, isFetching, generateColumns, resolveData }) => {
     log.info('creating new GenericEmikatTable');
+    log.debug(resolveData);
 
     //useEffect(() => { console.log('data:' + data + ' / isFetching: ' + isFetching) }, [data, isFetching]);
     //useEffect(() => console.log(data + 'value changed!'), [data]);
@@ -44,6 +45,7 @@ const GenericEmikatTable = ({ data, isFetching, generateColumns }) => {
     return (
         <ReactTable
             data={data.rows}
+            resolveData={resolveData}
             columns={generateColumns(data.columnnames)}
             loading={isFetching}
             defaultPageSize={15}
@@ -78,7 +80,9 @@ GenericEmikatTable.propTypes = {
      */
     isFetching: PropTypes.bool,
 
-    generateColumns: PropTypes.func
+    generateColumns: PropTypes.func,
+
+    resolveData: PropTypes.func
 };
 
 /**
@@ -95,7 +99,9 @@ GenericEmikatTable.defaultProps = {
      */
     isFetching: true,
 
-    generateColumns: EMIKATHelpers.generateColumns
+    generateColumns: EMIKATHelpers.generateColumns,
+
+    resolveData: undefined
 };
 
 export default GenericEmikatTable

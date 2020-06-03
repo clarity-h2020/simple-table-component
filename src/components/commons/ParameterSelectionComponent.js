@@ -16,9 +16,10 @@ import GenericEmikatTable from './GenericEmikatClient.js';
 import { EMIKATHelpers } from 'csis-helpers-js';
 import DownloadButton from './DownloadButton.js';
 
-const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emikatCredentials, selectionUiVisible, client: EmikatClientComponent, render: EmikatVisualisationComponent }) => {
+const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emikatCredentials, selectionUiVisible, client: EmikatClientComponent, render: EmikatVisualisationComponent, props }) => {
 
   log.info('creating new ParameterSelectionComponent');
+  log.debug(props);
 
   /**
    *  1) Either we pass just `props` and access `props.render` or
@@ -125,13 +126,13 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
             OK, but how does the EmikatVisualisationComponent get it's props? -> From EmikatClientComponent, not from the outside!
             Passing dynamic props from parent to children  is not as straightforward as one might imagine. See https://stackoverflow.com/a/32371612
           */}
-          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
+          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} props={props} />
           <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters={state} emikatCredentials={emikatCredentials} />
         </>);
     } else {
       return (
         <>
-          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} />
+          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} props={props} />
           <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters={state} emikatCredentials={emikatCredentials} />
         </>
       );
