@@ -5,7 +5,6 @@ import { EMIKATHelpers } from 'csis-helpers-js';
 import GenericEmikatClient from './commons/GenericEmikatClient.js';
 import ParameterSelectionComponent from './commons/ParameterSelectionComponent.js';
 import GenericEmikatTable from './commons/GenericEmikatTable.js';
-import { Route } from 'react-router';
 
 /**
  * The Characterise Hazard Table

@@ -71,6 +71,7 @@ function App(props) {
 
     const fetchEmikatCredentials = async () => {
       try {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         const theEmikatCredentials = await CSISRemoteHelpers.getEmikatCredentialsFromCsis(queryParams.host);
         //log.debug(`Emikat Credentials retrieved: ${theEmikatCredentials}`);
         setEmikatCredentials(theEmikatCredentials);
@@ -98,7 +99,7 @@ function App(props) {
       console.log('cleanup fetchEmikatCredentials fetching');
     };*/
 
-  }, []); // run effect only once -> See https://css-tricks.com/run-useeffect-only-once/
+  }, [queryParams.host]); // run effect only once -> See https://css-tricks.com/run-useeffect-only-once/
 
   /*useEffect(() => {
     console.log('location changed:' + JSON.stringify(props.location));
