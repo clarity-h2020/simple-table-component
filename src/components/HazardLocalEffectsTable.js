@@ -20,6 +20,7 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  * @see https://csis.myclimateservice.eu/node/1356
  */
 const HazardLocalEffectsTable = (props) => {
+	log.info('creating new HazardLocalEffectsTable');
 	const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/view.2974/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000&filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID}&filter=STUDY_VARIANT%3D%27${EMIKATHelpers.STUDY_VARIANT}%27&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
 	/**
    * o.k., we could handle this columns stuff in a generic way and include it in csis-helpers-js as a *special case* of 
@@ -30,14 +31,16 @@ const HazardLocalEffectsTable = (props) => {
 	const columns =
 		'&column=GRID_ID&column=STUDY_VARIANT&column=TIME_PERIOD&column=EMISSIONS_SCENARIO&column=EVENT_FREQUENCY&column=T_MRT&column=T_UTCI&column=T_A&column=DISCOMFORT_LEVEL';
 
-	log.info('creating new HazardLocalEffectsTable');
 	return (
-		<ParameterSelectionComponent
-			{...props}
-			emikatTemplateUrl={emikatTemplateUrl + columns}
-			client={GenericEmikatClient}
-			render={GenericEmikatTable}
-		/>
+		<>
+			<p>The table lists mean-, UTCI (Universal Thermal Climate Index)- and Apperent Temperature and Discomfort level for different RCP Scenarios.</p>
+			<ParameterSelectionComponent
+				{...props}
+				emikatTemplateUrl={emikatTemplateUrl + columns}
+				client={GenericEmikatClient}
+				render={GenericEmikatTable}
+			/>
+		</>
 	);
 };
 

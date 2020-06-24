@@ -44,6 +44,7 @@ function App(props) {
   if (props.location && props.location.search) {
     // copy default query params and extend using spread operator :o
     queryParams = { ...queryParams, ...queryString.parse(props.location.search) };
+    log.debug(queryParams);
   } else {
     log.warn('no query parameters found, showing empty table!')
   }
@@ -149,6 +150,9 @@ function App(props) {
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
                   dataFormat: queryParams.data_format,
+                  timePeriod: queryParams.time_period,
+                  emissionsScenario: queryParams.emissions_scenario,
+                  eventFrequency: queryParams.event_frequency,
                 }}
                 emikatCredentials={emikatCredentials}
                 selectionUiVisible={false}>
@@ -176,7 +180,10 @@ function App(props) {
               <ExposureTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
-                  dataFormat: queryParams.data_format
+                  dataFormat: queryParams.data_format,
+                  timePeriod: queryParams.time_period,
+                  emissionsScenario: queryParams.emissions_scenario,
+                  eventFrequency: queryParams.event_frequency,
                 }}
                 emikatCredentials={emikatCredentials}
                 selectionUiVisible={false}>

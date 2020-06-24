@@ -19,7 +19,7 @@ import DownloadButton from './DownloadButton.js';
 const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emikatCredentials, selectionUiVisible, client: EmikatClientComponent, render: EmikatVisualisationComponent, props }) => {
 
   log.info('creating new ParameterSelectionComponent');
-  log.debug(props);
+  //log.debug(props);
 
   /**
    *  1) Either we pass just `props` and access `props.render` or
