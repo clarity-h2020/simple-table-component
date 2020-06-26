@@ -16,6 +16,11 @@ import GenericEmikatTable from './GenericEmikatClient.js';
 import { EMIKATHelpers } from 'csis-helpers-js';
 import DownloadButton from './DownloadButton.js';
 
+/**
+ * ParameterSelectionComponent
+ * 
+ * @param {*} props props
+ */
 const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emikatCredentials, selectionUiVisible, client: EmikatClientComponent, render: EmikatVisualisationComponent, props }) => {
 
   log.info('creating new ParameterSelectionComponent');
@@ -37,7 +42,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
    * During the next renders, useState gives us the current state. Otherwise it wouldn’t be “state” at all! 
    * There’s also a reason why Hook names always start with use. 
    * 
-   * Believe it t or not: The argument passed to useState is the initial state much like setting state in constructor for a class component 
+   * Believe it or not: The argument passed to useState is the initial state much like setting state in constructor for a class component 
    * and isn't used to update the state on re-render, see https://stackoverflow.com/a/54866051
    * 
    */
