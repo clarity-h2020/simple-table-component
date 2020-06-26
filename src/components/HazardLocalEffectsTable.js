@@ -31,6 +31,23 @@ const HazardLocalEffectsTable = (props) => {
 	const columns =
 		'&column=GRID_ID&column=STUDY_VARIANT&column=TIME_PERIOD&column=EMISSIONS_SCENARIO&column=EVENT_FREQUENCY&column=T_MRT&column=T_UTCI&column=T_A&column=DISCOMFORT_LEVEL';
 
+	const resolveData = function (data) {
+		data.map(function transform(row) {
+			row.values[5] = row.values[5] !== null && !isNaN(parseFloat(row.values[5])) ?
+				Math.round(row.values[5] * 100 + Number.EPSILON) / 100 + ' °C' : 'n/a';
+
+			row.values[6] = (row.values[6] !== null && isNaN(parseFloat(row.values[6])) === false) ?
+				(Math.round(row.values[6] * 100 + Number.EPSILON) / 100 + ' °C') : 'n/a';
+
+			row.values[7] = row.values[7] !== null && !isNaN(parseFloat(row.values[7])) ?
+				Math.round(row.values[7] * 100 + Number.EPSILON) / 100 + ' °C' : 'n/a';
+
+			return row;
+		});
+
+		return data;
+	};
+
 	return (
 		<>
 			<p>The table lists mean-, UTCI (Universal Thermal Climate Index)- and Apperent Temperature and Discomfort level for different RCP Scenarios.</p>
@@ -39,7 +56,8 @@ const HazardLocalEffectsTable = (props) => {
 				emikatTemplateUrl={emikatTemplateUrl + columns}
 				client={GenericEmikatClient}
 				render={GenericEmikatTable}
-			/>
+				props={{ resolveData: resolveData }}>
+			</ParameterSelectionComponent>
 		</>
 	);
 };
