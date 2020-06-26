@@ -86,7 +86,7 @@ const DownloadButton = ({ emikatTemplateUrl, emikatParameters, emikatCredentials
           <option value={EMIKATHelpers.DATA_FORMAT_VALUES[1]}>CSV</option>
           <option value={EMIKATHelpers.DATA_FORMAT_VALUES[2]}>GeoJSON</option>
         </select>&nbsp;&nbsp;
-        <button disabled={state.buttonDisabled} onClick={handleClick}>{state.buttonDisabled ? 'Downloading ...' : 'Download'}</button>
+        <button id="download" name="download" disabled={state.buttonDisabled} onClick={handleClick}>{state.buttonDisabled ? 'Downloading ...' : 'Download'}</button>
       </div>);
   } else {
     // works but with warning: Failed prop type: The prop `emikatCredentials` is marked as required in `ParameterSelectionComponent`, but its value is `null`.
