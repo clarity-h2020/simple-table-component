@@ -21,7 +21,8 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  */
 const HazardLocalEffectsTable = (props) => {
 	log.info('creating new HazardLocalEffectsTable');
-	const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/view.2974/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000&filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID}&filter=STUDY_VARIANT%3D%27${EMIKATHelpers.STUDY_VARIANT}%27&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
+	// &filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID} or not SZ_ID, that's the question :-(
+	const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/view.2974/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000&filter=STUDY_VARIANT%3D%27${EMIKATHelpers.STUDY_VARIANT}%27&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
 	/**
    * o.k., we could handle this columns stuff in a generic way and include it in csis-helpers-js as a *special case* of 
    * EMIKAT URI parametrization, but hey, KISS and YAGNI anyone? ATM column names are not treated as $variables anyway. 
