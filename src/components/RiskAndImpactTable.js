@@ -30,7 +30,8 @@ const RiskAndImpactTable = (props) => {
   return (
     <ParameterSelectionComponent
       {...props}
-      emikatTemplateUrl={emikatTemplateUrl + columns}
+      emikatTemplateUrl={emikatTemplateUrl}
+      columns={columns}
       client={GenericEmikatClient}
       render={GenericEmikatTable}>
     </ParameterSelectionComponent>);

@@ -21,7 +21,7 @@ import DownloadButton from './DownloadButton.js';
  * 
  * @param {*} props props
  */
-const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emikatCredentials, selectionUiVisible, client: EmikatClientComponent, render: EmikatVisualisationComponent, props }) => {
+const ParameterSelectionComponent = ({ emikatTemplateUrl, columns, emikatParameters, emikatCredentials, selectionUiVisible, client: EmikatClientComponent, render: EmikatVisualisationComponent, props }) => {
 
   log.info('creating new ParameterSelectionComponent');
   //log.debug(props);
@@ -131,13 +131,13 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, emikatParameters, emik
             OK, but how does the EmikatVisualisationComponent get it's props? -> From EmikatClientComponent, not from the outside!
             Passing dynamic props from parent to children  is not as straightforward as one might imagine. See https://stackoverflow.com/a/32371612
           */}
-          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} props={props} />
+          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl+columns, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} props={props} />
           <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters={state} emikatCredentials={emikatCredentials} />
         </>);
     } else {
       return (
         <>
-          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} props={props} />
+          <EmikatClientComponent emikatUrl={parametriseEmikatTemplateUrl(emikatTemplateUrl+columns, state)} emikatCredentials={emikatCredentials} render={EmikatVisualisationComponent} props={props} />
           <DownloadButton emikatTemplateUrl={emikatTemplateUrl} emikatParameters={state} emikatCredentials={emikatCredentials} />
         </>
       );
@@ -172,6 +172,11 @@ ParameterSelectionComponent.propTypes = {
     emissionsScenario: PropTypes.oneOf(EMIKATHelpers.EMISSIONS_SCENARIO_VALUES),
     eventFrequency: PropTypes.oneOf(EMIKATHelpers.EVENT_FREQUENCY_VALUES),
   }).isRequired,
+  
+  /**
+   * Columns to be shown in table
+   */
+  columns: PropTypes.string,
 
   /**
    * The Basic Auth credentials
@@ -202,6 +207,7 @@ ParameterSelectionComponent.propTypes = {
 ParameterSelectionComponent.defaultProps = {
 
   emikatTemplateUrl: 'https://service.emikat.at/EmiKatTst/api/',
+  columns: '',
   emikatParameters: {
     emikatStudyId: undefined,
     dataFormat: EMIKATHelpers.DATA_FORMAT_VALUES[0],

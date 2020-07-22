@@ -54,7 +54,8 @@ const HazardLocalEffectsTable = (props) => {
 			<p>The table lists mean-, UTCI (Universal Thermal Climate Index)- and Apperent Temperature and Discomfort level for the selected RCP Scenario.</p>
 			<ParameterSelectionComponent
 				{...props}
-				emikatTemplateUrl={emikatTemplateUrl + columns}
+				emikatTemplateUrl={emikatTemplateUrl}
+				columns={columns}
 				client={GenericEmikatClient}
 				render={GenericEmikatTable}
 				props={{ resolveData: resolveData }}>
