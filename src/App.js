@@ -141,7 +141,7 @@ function App(props) {
     return (
       <BrowserRouter>
         {/*<!-- BrowserRouter/Switch already defined in index.js otherwise propos.location would be undefined.
-        Why do we have to repeat it here? I don't know but if we don't do it Switch will not work an show ll routes
+        Why do we have to repeat it here? I don't know but if we don't do it Switch will not work and show ll routes
       -->*/}
         <Switch>
           <Route exact path={`${process.env.PUBLIC_URL}/CharacteriseHazardTable`}>
