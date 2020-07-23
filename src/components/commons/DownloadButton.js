@@ -68,6 +68,7 @@ const DownloadButton = ({ emikatTemplateUrl, emikatParameters, emikatCredentials
   function parametriseEmikatTemplateUrl(emikatTemplateUrl, parameters) {
     const parametersMap = new Map(
       [[EMIKATHelpers.EMIKAT_STUDY_ID, parameters.emikatStudyId],
+      [EMIKATHelpers.ROWNUM, 25000],
       [EMIKATHelpers.DATA_FORMAT, parameters.dataFormat],
       [EMIKATHelpers.STUDY_VARIANT, parameters.studyVariant],
       [EMIKATHelpers.TIME_PERIOD, parameters.timePeriod],

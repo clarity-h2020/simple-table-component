@@ -91,6 +91,7 @@ const ParameterSelectionComponent = ({ emikatTemplateUrl, columns, emikatParamet
   function parametriseEmikatTemplateUrl(emikatTemplateUrl, parameters) {
     const parametersMap = new Map(
       [[EMIKATHelpers.EMIKAT_STUDY_ID, parameters.emikatStudyId],
+      [EMIKATHelpers.ROWNUM, parameters.rownum],
       [EMIKATHelpers.DATA_FORMAT, parameters.dataFormat],
       [EMIKATHelpers.STUDY_VARIANT, parameters.studyVariant],
       [EMIKATHelpers.TIME_PERIOD, parameters.timePeriod],
@@ -166,6 +167,7 @@ ParameterSelectionComponent.propTypes = {
   emikatParameters: PropTypes.exact({
     //emikatStudyId: PropTypes.number.isRequired,
     emikatStudyId: PropTypes.string.isRequired, // yes, should be number but the effort is wasted if we retrieve it from query params and need to convert it to number
+    rownum: PropTypes.number,
     dataFormat: PropTypes.string,
     studyVariant: PropTypes.string,
     timePeriod: PropTypes.oneOf(EMIKATHelpers.TIME_PERIOD_VALUES),
@@ -210,8 +212,9 @@ ParameterSelectionComponent.defaultProps = {
   columns: '',
   emikatParameters: {
     emikatStudyId: undefined,
+    rownum: 1000,
     dataFormat: EMIKATHelpers.DATA_FORMAT_VALUES[0],
-    studyVariant: EMIKATHelpers.STUDY_VARIANT_VALUES[0],
+    studyVariant: EMIKATHelpers.STUDY_VARIANT_VALUES[0], // BASELINE
     timePeriod: EMIKATHelpers.TIME_PERIOD_VALUES[0],
     emissionsScenario: EMIKATHelpers.EMISSIONS_SCENARIO_VALUES[0],
     eventFrequency: EMIKATHelpers.EVENT_FREQUENCY_VALUES[0]

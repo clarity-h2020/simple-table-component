@@ -19,7 +19,7 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  */
 const GenericTable = (props) => {
   log.info('creating new GenericTable');
-  const [emikatTemplateUrl, setEmikatTemplateUrl] = useState(`https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/view.2975/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000&filter=STUDY_VARIANT%3D%27${EMIKATHelpers.STUDY_VARIANT}%27&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`);
+  const [emikatTemplateUrl, setEmikatTemplateUrl] = useState(`https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/view.2975/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`);
   const [emikatStudyId, setEmikatStudyId] = useState('2846');
 
   /**
