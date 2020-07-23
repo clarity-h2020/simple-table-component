@@ -20,7 +20,7 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  */
 const CharacteriseHazardTable = (props) => {
   log.info('creating new CharacteriseHazardTable');
-  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_HAZARD_EVENTS_STUDY.2036/table/${EMIKATHelpers.DATA_FORMAT}?rownum=1000&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
+  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_HAZARD_EVENTS_STUDY.2036/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
 
   // `Hazard Event Type ID` - Column names with whitespaces :-(
   // urban_area & country - should be 'consolidated (#13) but it isn't working anyway (https://github.com/clarity-h2020/emikat/issues/40) -> YAGNI. remove it!

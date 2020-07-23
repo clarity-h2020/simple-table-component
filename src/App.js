@@ -149,6 +149,7 @@ function App(props) {
               <CharacteriseHazardTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
+                  rownum:  queryParams.rownum ? queryParams.rownum : 1000,
                   dataFormat: queryParams.data_format,
                   timePeriod: queryParams.time_period,
                   emissionsScenario: queryParams.emissions_scenario,
@@ -164,6 +165,7 @@ function App(props) {
               <HazardLocalEffectsTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
+                  rownum:  queryParams.rownum ? queryParams.rownum : 1000,
                   dataFormat: queryParams.data_format,
                   studyVariant: queryParams.study_variant,
                   timePeriod: queryParams.time_period,
@@ -180,6 +182,7 @@ function App(props) {
               <ExposureTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
+                  rownum:  queryParams.rownum ? queryParams.rownum : 1000,
                   dataFormat: queryParams.data_format,
                   timePeriod: queryParams.time_period,
                   emissionsScenario: queryParams.emissions_scenario,
@@ -195,6 +198,7 @@ function App(props) {
               <RiskAndImpactTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
+                  rownum:  queryParams.rownum ? queryParams.rownum : 1000,
                   dataFormat: queryParams.data_format,
                   studyVariant: queryParams.study_variant,
                   timePeriod: queryParams.time_period,
@@ -215,6 +219,7 @@ function App(props) {
               <GenericTable
                 emikatParameters={{
                   emikatStudyId: queryParams.emikat_id,
+                  rownum:  queryParams.rownum ? queryParams.rownum : 1000,
                   dataFormat: queryParams.data_format,
                   studyVariant: queryParams.study_variant,
                   timePeriod: queryParams.time_period,
