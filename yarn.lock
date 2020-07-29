@@ -4407,9 +4407,9 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-"csis-helpers-js@https://github.com/clarity-h2020/csis-helpers-js.git#semver:^0.6.4":
-  version "0.6.4"
-  resolved "https://github.com/clarity-h2020/csis-helpers-js.git#2d3f68d87679683f5598fb38819ed2ef85d2b911"
+"csis-helpers-js@https://github.com/clarity-h2020/csis-helpers-js.git#semver:^0.6.5":
+  version "0.6.5"
+  resolved "https://github.com/clarity-h2020/csis-helpers-js.git#bbc923ae83a1732d0a94a4527796ed999567c694"
   dependencies:
     "@babel/runtime" "~7.10.5"
     axios "^0.19.2"
