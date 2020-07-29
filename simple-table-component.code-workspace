@@ -5,6 +5,14 @@
 		}
 	],
 	"settings": {
-		"javascript.implicitProjectConfig.checkJs": true
+		"javascript.implicitProjectConfig.checkJs": true,
+		"spellright.language": [
+			"en"
+		],
+		"spellright.documentTypes": [
+			"markdown",
+			"latex",
+			"plaintext"
+		]
 	}
 }
