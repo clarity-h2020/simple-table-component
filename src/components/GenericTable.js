@@ -7,9 +7,7 @@ import ParameterSelectionComponent from './commons/ParameterSelectionComponent.j
 import GenericEmikatTable from './commons/GenericEmikatTable.js';
 
 /**
- * A GenericTable.
- * This is the base table for 
- * 
+ * The Generic Table is the base table for more specific tables likes the `RiskAndImpactTable`.
  * 
  * Test with emikat_id=2846
  * 

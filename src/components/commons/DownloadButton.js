@@ -13,6 +13,12 @@ import log from 'loglevel';
 import { EMIKATHelpers } from 'csis-helpers-js';
 import FileSaver from 'file-saver';
 
+/**
+ * The DownloadButton is a component similar to the `GenericEmikatClient`, except that it provides a UI for selecting the format of the data retrieved rom EMIKAT API and forces the browser to download the data.
+ * While specialised tables like the [](Exposure Table)
+ * 
+ * @param {*} param0 
+ */
 const DownloadButton = ({ emikatTemplateUrl, emikatParameters, emikatCredentials }) => {
 
   log.info('creating new DownloadButton');

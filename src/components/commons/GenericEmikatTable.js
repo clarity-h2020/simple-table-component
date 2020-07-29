@@ -25,7 +25,9 @@ import {EMIKATHelpers} from  'csis-helpers-js';
 // see https://www.robinwieruch.de/react-pass-props-to-component/#react-props-code-style
 
 /**
- * A Generic Table Component that understand the 'special' JSON format of the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html).
+ * A Generic Table Component based on [ReactTable](https://www.npmjs.com/package/react-table) v6.0 that understand the 'special' JSON format of the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html).
+ * It uses [csis-helpers-js](https://github.com/clarity-h2020/csis-helpers-js/) to translate the proprietary EMIKAT JSON format into a tabular format understood by ReactTable. It is the 'base class' of more specific tables like the `ExposureTable`. 
+ * Specific tables can provide their own `columns` and `resolveData` props that control which columns are shown and how the data is formatted.
  * 
  * @param {GenericEmikatTableProps} props 
  * @version 0.1.0

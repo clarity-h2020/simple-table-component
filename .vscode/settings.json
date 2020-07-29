@@ -7,5 +7,14 @@
     "Dihé",
     "cismet"
   ],
+  "spellright.language": [
+    "en"
+  ],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext",
+    "javascript"
+  ],
   //"jest.pathToJest": "./node_modules/.bin/jest"
 }

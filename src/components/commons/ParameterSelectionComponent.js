@@ -17,7 +17,8 @@ import { EMIKATHelpers } from 'csis-helpers-js';
 import DownloadButton from './DownloadButton.js';
 
 /**
- * ParameterSelectionComponent
+ * The Parameter Selection Component can wrap an EmikatClientComponent and a DownloadButton Component and adds a user interface for selection parametres related to a scenario.
+ * In particular `time_period`, `emissions_scenario` and `event_frequency`. The Parameter Selection Component therby changes the respctive `emikatParameters` props which are used to parameterise the API template URL.
  * 
  * @param {*} props props
  */
@@ -181,7 +182,7 @@ ParameterSelectionComponent.propTypes = {
   columns: PropTypes.string,
 
   /**
-   * The Basic Auth credentials
+   * The Basic Auth credentials for the EMIKAT API
    */
   emikatCredentials: PropTypes.string.isRequired,
 
@@ -191,12 +192,12 @@ ParameterSelectionComponent.propTypes = {
   selectionUiVisible: PropTypes.bool,
 
   /**
-   * The client component used to communicate with the backend
+   * The client component used to communicate with the backend (render prop)
    */
   client: PropTypes.elementType,
 
   /**
-   * The actual visualisation component to be rendered
+   * The actual visualisation component to be rendered (render prop)
    */
   render: PropTypes.elementType
 
