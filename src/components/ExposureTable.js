@@ -9,10 +9,9 @@ import ParameterSelectionComponent from './commons/ParameterSelectionComponent.j
 /**
  * The ExposureTable
  * 
- * TODO: ExposureTable API URL currently hardcoded and not loaded from Data Package, see ${emikatTemplateUrl}.
- * YAGNI: Questionable if it is really worth the effort to mess with the Drupal APi and extract the URLs.
+ * EMIKAT API URL is hardcoded and not loaded from Data Package since EMIKAT Resources are not updated anyway
+ * and table views  do not change. See ${emikatTemplateUrl}.
  * 
- * Test with emikat_id=2846
  * 
  * @param {*} props 
  * @see https://github.com/clarity-h2020/data-package/issues/49
@@ -20,11 +19,30 @@ import ParameterSelectionComponent from './commons/ParameterSelectionComponent.j
  */
 const ExposureTable = (props) => {
   log.info('creating new ExposureTable');
-  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_EL_POPULATION_INTERPOLATED.2016/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}`;
+  /**
+   * Combined Exposure Table View for Flood and Heat
+   */
+  const emikatView = 'view.2955';
+
+  /**
+   * Exposure Table View for Heat (Element at Risk = Population)
+   * @deprecated
+   */
+  // emikatView = 'tab.CLY_EL_POPULATION_INTERPOLATED.2016'
+
+  /**
+   * Template URL. Parameters are substituted with values recivied from Drupla API.
+   * **Warning:** &filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID} is required altough EMIKAT_STUDY_ID is already part of the path!
+   */
+  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/${emikatView}/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}&filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID}`;
+
+  const columns =
+		'&column=GRID_ID&column=POPULATION_TOTAL';
 
   return (
     <ParameterSelectionComponent
       {...props}
+      columns={columns}
       emikatTemplateUrl={emikatTemplateUrl}
       client={GenericEmikatClient}
       render={GenericEmikatTable}>

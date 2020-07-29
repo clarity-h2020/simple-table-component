@@ -8,18 +8,15 @@
  * ***************************************************
  */
 
-import React, { useEffect, useState, Suspense } from 'react';
-import { Switch, BrowserRouter, Route } from "react-router-dom";
+import { CSISHelpers, CSISRemoteHelpers } from 'csis-helpers-js';
 import { createBrowserHistory } from 'history';
-import queryString from 'query-string';
 import log from 'loglevel';
-
-import { CSISRemoteHelpers, CSISHelpers } from 'csis-helpers-js'
-import GlobalErrorBoundary from './components/commons/GlobalErrorBoundary.js';
-
-
-import logo from './logo.svg';
+import queryString from 'query-string';
+import React, { Suspense, useEffect, useState } from 'react';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import './App.css';
+import GlobalErrorBoundary from './components/commons/GlobalErrorBoundary.js';
+import logo from './logo.svg';
 
 export const history = createBrowserHistory({
   basename: process.env.PUBLIC_URL
@@ -56,6 +53,7 @@ function App(props) {
   const HazardLocalEffectsTable = React.lazy(() => import('./components/HazardLocalEffectsTable.js'));
   const ExposureTable = React.lazy(() => import('./components/ExposureTable.js'));
   const RiskAndImpactTable = React.lazy(() => import('./components/RiskAndImpactTable.js'));
+  const AdaptationOptionsAppraisalTable = React.lazy(() => import('./components/AdaptationOptionsAppraisalTable.js'));
 
   // useState returns an array with 2 elements, and we’re using **ES6 destructuring** to assign names to them
   const [emikatCredentials, setEmikatCredentials] = useState();
@@ -208,6 +206,23 @@ function App(props) {
                 emikatCredentials={emikatCredentials}
                 selectionUiVisible={true}>
               </RiskAndImpactTable>
+            </Suspense>
+          </Route>
+          <Route exact path={`${process.env.PUBLIC_URL}/AdaptationOptionsAppraisalTable`}>
+            <Suspense fallback={<WaitingComponent />}>
+              <AdaptationOptionsAppraisalTable
+                emikatParameters={{
+                  emikatStudyId: queryParams.emikat_id,
+                  rownum:  queryParams.rownum ? queryParams.rownum : 1000,
+                  dataFormat: queryParams.data_format,
+                  studyVariant: queryParams.study_variant,
+                  timePeriod: queryParams.time_period,
+                  emissionsScenario: queryParams.emissions_scenario,
+                  eventFrequency: queryParams.event_frequency
+                }}
+                emikatCredentials={emikatCredentials}
+                selectionUiVisible={true}>
+              </AdaptationOptionsAppraisalTable>
             </Suspense>
           </Route>
 
