@@ -9,8 +9,8 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
 /**
  * The Characterise Hazard Table
  * 
- * TODO: RA/IA API URL currently hardcoded and not loaded from Data Package, see ${emikatTemplateUrl}.
- * YAGNI: Questionable if it is really worth the effort to mess with the Drupal APi and extract the URLs.
+ * EMIKAT API URL is hardcoded and not loaded from Data Package since EMIKAT Resources are not updated anyway
+ * and table views  do not change. See ${emikatTemplateUrl}.
  * 
  * Test with emikat_id=2846
  * 
@@ -20,7 +20,12 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  */
 const CharacteriseHazardTable = (props) => {
   log.info('creating new CharacteriseHazardTable');
-  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/tab.CLY_HAZARD_EVENTS_STUDY.2036/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
+  /**
+	 * Combined Table View for Flood and Heat
+	 */
+  const emikatView = 'tab.CLY_HAZARD_EVENTS_STUDY.2036';
+  
+  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/${emikatView}/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}&filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID}&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
 
   // `Hazard Event Type ID` - Column names with whitespaces :-(
   // urban_area & country - should be 'consolidated (#13) but it isn't working anyway (https://github.com/clarity-h2020/emikat/issues/40) -> YAGNI. remove it!

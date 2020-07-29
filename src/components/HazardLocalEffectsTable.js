@@ -34,26 +34,26 @@ const HazardLocalEffectsTable = (props) => {
    * Inconsistency alert: `EVENT_FREQUENCY` is called `Frequence` in EE API :-(
    * */
 	const columns = 
-		'&column=GRID_ID&column=HW_T_MRT&column=HW_T_UTCI&column=HW_T_A&column=HW_DISCOMFORT_LEVEL&column=PF_STREAMS&column=PF_CL_STREAMS&columnPF_DELTA_ELEV&column=PF_CL_DELTA_ELEV&column=PF_RUN_OFF_AVERAGE&column=PF_CL_RUNOFF&column=PF_RAIN_MM&column=PF_CL_RAIN&column=PF_PROP';
+		'&column=GRID_ID&column=STUDY_VARIANT&column=HW_T_MRT&column=HW_T_UTCI&column=HW_T_A&column=HW_DISCOMFORT_LEVEL&column=PF_STREAMS&column=PF_CL_STREAMS&columnPF_DELTA_ELEV&column=PF_CL_DELTA_ELEV&column=PF_RUN_OFF_AVERAGE&column=PF_CL_RUNOFF&column=PF_RAIN_MM&column=PF_CL_RAIN&column=PF_PROP';
 
 	/**
-	 * Custom formatting of column data
+	 * Custom formatting of column data.
 	 */
 	const resolveData = function (data) {
 		data.map(function transform(row) {
-			let index  = 1; // HW_T_MRT
+			let index  = 2; // HW_T_MRT
 			row.values[index] = row.values[index] !== null && !isNaN(parseFloat(row.values[index])) ?
 				Math.round(row.values[index] * 100 + Number.EPSILON) / 100 + ' °C' : 'n/a';
 
-			index  = 2; // HW_T_UTCI
+			index  = 3; // HW_T_UTCI
 			row.values[index] = (row.values[index] !== null && isNaN(parseFloat(row.values[index])) === false) ?
 				(Math.round(row.values[index] * 100 + Number.EPSILON) / 100 + ' °C') : 'n/a';
 
-			index  = 3; // HW_T_A
+			index  = 4; // HW_T_A
 			row.values[index] = row.values[index] !== null && !isNaN(parseFloat(row.values[index])) ?
 				Math.round(row.values[index] * 100 + Number.EPSILON) / 100 + ' °C' : 'n/a';
 
-			index  = 8; // PF_RUN_OFF_AVERAGE
+			index  = 9; // PF_RUN_OFF_AVERAGE
 			row.values[index] = row.values[index] !== null && !isNaN(parseFloat(row.values[index])) ?
 				Math.round(row.values[index] * 10000 + Number.EPSILON) / 10000 : 'n/a';
 
