@@ -37,7 +37,7 @@ import {EMIKATHelpers} from  'csis-helpers-js';
  */
 const GenericEmikatTable = ({ data, isFetching, generateColumns, resolveData }) => {
     log.info('creating new GenericEmikatTable');
-    log.debug(resolveData);
+    //log.debug(resolveData);
 
     //useEffect(() => { console.log('data:' + data + ' / isFetching: ' + isFetching) }, [data, isFetching]);
     //useEffect(() => console.log(data + 'value changed!'), [data]);

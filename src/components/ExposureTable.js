@@ -9,7 +9,7 @@ import ParameterSelectionComponent from './commons/ParameterSelectionComponent.j
 /**
  * The ExposureTable
  * 
- * ExposureTable API URL is hardcoded and not loaded from Data Package since EMIKAT Resources are not updated anyway
+ * EMIKAT API URL is hardcoded and not loaded from Data Package since EMIKAT Resources are not updated anyway
  * and table views  do not change. See ${emikatTemplateUrl}.
  * 
  * 
