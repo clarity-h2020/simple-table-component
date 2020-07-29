@@ -212,7 +212,7 @@ ParameterSelectionComponent.defaultProps = {
   columns: '',
   emikatParameters: {
     emikatStudyId: undefined,
-    rownum: 1000,
+    rownum: 2500,
     dataFormat: EMIKATHelpers.DATA_FORMAT_VALUES[0],
     studyVariant: EMIKATHelpers.STUDY_VARIANT_VALUES[0], // BASELINE
     timePeriod: EMIKATHelpers.TIME_PERIOD_VALUES[0],
