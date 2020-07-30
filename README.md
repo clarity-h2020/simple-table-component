@@ -1,4 +1,4 @@
-Simple Table Component
+Simple Table Component [![DOI](https://zenodo.org/badge/199877837.svg)](https://zenodo.org/badge/latestdoi/199877837)
 ===========================
 
 ## Description
@@ -56,17 +56,21 @@ The related *response* (excerpt):
     },
 ```
 
-### Download Button
+All EMIKAT Service Endpoints including some examples are listed [here](https://github.com/clarity-h2020/csis/wiki/Services-endpoints-(used-by-CSIS)).
+
+### DownloadButton
 The DownloadButton is a component similar to the `GenericEmikatClient`, except that it provides an UI for selecting the format of the data retrieved from EMIKAT API and forces the browser to download the data instead of forwarding it to a separate render component.
 
 ![image](https://user-images.githubusercontent.com/1788226/88928208-d33b2a80-d278-11ea-8009-e2aea56ce2af.png)
 
+While specialised tables may modify the response, e.g. by reformatting data or hiding columns, the DownloadButton just downloads the unprocessed data received from EMIKAT API. Furthermore, the query parameter / prop `rownum` that controls the maximum number of rows shown in a table is not recognized by the DownloadButton, it requests by default 25.000 rows.
+
 ### GenericEmikatTable
-A Generic Table Component based on [ReactTable](https://www.npmjs.com/package/react-table) v6.0 that understand the 'special' JSON format of the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html). It uses [csis-helpers-js](https://github.com/clarity-h2020/csis-helpers-js/) to translate the proprietary EMIKAT JSON format into a tabular format understood by ReactTable. It is the 'base class' of more specific tables like the `ExposureTable`. Specific tables can provide their own `generateColumns` and `resolveData` functions as props that control which columns are shown and how the data is formatted. Tables don't care where the data comes from, they accept a `data` prop which has to contain a JSON Object following the EMIKAT API format.
+A Generic Table Component based on [ReactTable](https://www.npmjs.com/package/react-table) v6.0 that understand the JSON format of the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html). It uses [csis-helpers-js](https://github.com/clarity-h2020/csis-helpers-js/) to translate the proprietary EMIKAT JSON format into a tabular format understood by ReactTable. It is the 'base class' of more specific tables like the `ExposureTable`. Specific tables can provide their own `generateColumns` and `resolveData` functions as props that control which columns are shown and how the data is formatted. 
 
-### Parameter Selection Component
+### ParameterSelectionComponent
 
-The Parameter Selection Component can wrap an `EmikatClientComponen`t` and a `DownloadButton` Component as *render props* and add a user interface for selection parameters related to a *scenario*. in particular `time_period`, `emissions_scenario` and `event_frequency`. The Parameter Selection Component thereby changes the respective `emikatParameters` props of the wrapped components. These props are used to parameterise the API template URL.
+The Parameter Selection Component can wrap an `EmikatClientComponent` and a `DownloadButton` Component as *render props* and add a user interface for selection parameters related to a *scenario*, in particular `time_period`, `emissions_scenario` and `event_frequency`. The Parameter Selection Component thereby changes the respective `emikatParameters` props of the wrapped components. These props are used to parameterise the API template URL. More information on EMIKAT API parameters can be found in [EMIKATHelpers.js](https://github.com/clarity-h2020/csis-helpers-js/blob/dev/src/lib/EMIKATHelpers.js).
 
 ![image](https://user-images.githubusercontent.com/1788226/88928088-aa1a9a00-d278-11ea-99f3-9ce9a2c1796d.png)
 
@@ -134,26 +138,63 @@ yarn test
 
 The **dev** branch is automatically built on [cismet CI](https://ci.cismet.de/view/CLARITY/job/simple-table-component/) based on [this](https://github.com/clarity-h2020/simple-table-component/blob/dev/Jenkinsfile) pipeline definition. 
 
-## Upgrading 
+### Dependencies 
 
 Dependencies can be easily upgraded with [npm-upgrade](https://www.npmjs.com/package/npm-upgrade):
 
 ``npx npm-upgrade``
 
-The advantage over `yarn upgrade` is that that `package.json`is updated with the new dependency version.
+The advantage over `yarn upgrade` is that that `package.json` is updated with the new dependency version.
 
+### Deployment on CSIS
+
+Although Simple Table Component is integrated in [CI](https://ci.cismet.de/view/CLARITY/job/simple-table-component/), deployment on CSIS is not automated. The following manual steps are required on `cisis-dev.ait.ac.at` and `cisis.ait.ac.at`:
+
+```sh
+sudo su docker
+cd /docker/100-csis/drupal-data/web/apps/simple-table-component/
+
+# reset yarn.lock
+git reset --hard
+
+# pull dev or master branch
+git pull
+
+# install latest dependencies (may update yarn.lock)
+yarn install --network-concurrency 1
+
+# build the app
+yarn build
+
+# clear drupal cache
+docker exec --user 999 csis-drupal drush cr
+```
+Note: Commonly on DEV the `dev` branch and on master the `master`  branch is used. 
 
 ## Usage
 
-Unless the [Scenario Analysis Component](https://github.com/clarity-h2020/scenario-analysis), this component does not use [seamless.js](https://github.com/travist/seamless.js/) to communicate with the [CSIS Drupal System](https://csis.myclimateservice.eu/) when embedded as iFrame. Instead, it can be configured by query parameters. Main reasons are that bidirectional communication between iFrame and main site are not required and that query parameters allow the app to be tested independently of CSIS.
+### Query Parameters
+
+Unless the [Scenario Analysis Component](https://github.com/clarity-h2020/scenario-analysis), this component does not use [seamless.js](https://github.com/travist/seamless.js/) to communicate with the [CSIS Drupal System](https://csis.myclimateservice.eu/) when embedded as iFrame. Instead, it can be configured by query parameters. Main reasons are that bidirectional communication between iFrame and main site is not required and that query parameters allow the app to be tested independently of CSIS.
 
 The different tables are selected by the corresponding route, e.g. `/AdaptationOptionsAppraisalTable` for the AdaptationOptionsAppraisalTable. The query parameters supported by the table are:
 
-- 
+- `host` CSIS API host (e.g. https://csis.myclimateservice.eu/)
+- `emikat_id` internal EMIKAT Study id (e.g. 3209)
+- `rownum` number of rows requested from EMIKAT API (default: 3000)
+- `time_period` (e.g. Baseline)
+- `emissions_scenario` (e.g. Baseline)
+- `event_frequency` (e.g. Frequent)
 
-Query parameters are mapped to respective props in [App.js](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/App.js).
+Query parameters are mapped to respective props in [App.js](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/App.js). For more information on query parameters refer to [CSISHelpers.defaultQueryParams](https://github.com/clarity-h2020/csis-helpers-js/blob/dev/src/lib/CSISHelpers.js#L43) and for props to [GenericEmikatClient.propTypes](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/commons/GenericEmikatClient.js#L97) and [ParameterSelectionComponent.propTypes](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/commons/ParameterSelectionComponent.js#L158).
 
-For more information refer to [GenericEmikatClient.propTypes](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/commons/GenericEmikatClient.js#L97), [ParameterSelectionComponent.propTypes](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/commons/ParameterSelectionComponent.js#L158) and 
+### Integration in CSIS
+
+The application is integrated as *"Extended iFrame"* in [CSIS Drupal System](https://csis-dev.myclimateservice.eu/). The respective Drupal *Nodes* that contains the [iFrame](https://csis-dev.myclimateservice.eu/apps/simple-table-component/build/) are listed [here](https://csis-dev.myclimateservice.eu/admin/content?title=Table+Component&type=extended_iframe&status=1&langcode=All).
+
+The application is configured via the aforementioned query parameters. The query parameters are extracted by [csis_iframe_connector.js](https://github.com/clarity-h2020/csis-helpers-module/blob/dev/js/csis_iframe_connector.js) from the `studyInfo` object which is injected into the main Drupal CSIS Website via the [CSIS Helpers Drupal Module](https://github.com/clarity-h2020/csis-helpers-module/), in particular by [StudyInfoGenerator.php](https://github.com/clarity-h2020/csis-helpers-module/blob/dev/src/Utils/StudyInfoGenerator.php).
+
+The *"Extended iFrame"* nodes  are used in several [EU-GL Step Templates](https://csis-dev.myclimateservice.eu/admin/content?title=Template&type=gl_step&status=1&langcode=All) as **[Extended iFrame] Table Application**, e.g. in EU-GL Steps Impact/Risk Assessment and Adaptation Options Appraisal.
 
 ## License
  
