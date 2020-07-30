@@ -1,4 +1,4 @@
-Simple Table Component [![Build Status](https://ci.cismet.de/buildStatus/icon?job=simple-table-component)](https://ci.cismet.de/view/CLARITY/job/simple-table-component/)
+Simple Table Component
 ===========================
 
 ## Description
@@ -59,6 +59,8 @@ The related *response* (excerpt):
 ### Download Button
 The DownloadButton is a component similar to the `GenericEmikatClient`, except that it provides an UI for selecting the format of the data retrieved from EMIKAT API and forces the browser to download the data instead of forwarding it to a separate render component.
 
+![image](https://user-images.githubusercontent.com/1788226/88928208-d33b2a80-d278-11ea-8009-e2aea56ce2af.png)
+
 ### GenericEmikatTable
 A Generic Table Component based on [ReactTable](https://www.npmjs.com/package/react-table) v6.0 that understand the 'special' JSON format of the [EMIKAT API](https://service.emikat.at/EmiKat/swagger/index.html). It uses [csis-helpers-js](https://github.com/clarity-h2020/csis-helpers-js/) to translate the proprietary EMIKAT JSON format into a tabular format understood by ReactTable. It is the 'base class' of more specific tables like the `ExposureTable`. Specific tables can provide their own `generateColumns` and `resolveData` functions as props that control which columns are shown and how the data is formatted. Tables don't care where the data comes from, they accept a `data` prop which has to contain a JSON Object following the EMIKAT API format.
 
@@ -66,12 +68,43 @@ A Generic Table Component based on [ReactTable](https://www.npmjs.com/package/re
 
 The Parameter Selection Component can wrap an `EmikatClientComponen`t` and a `DownloadButton` Component as *render props* and add a user interface for selection parameters related to a *scenario*. in particular `time_period`, `emissions_scenario` and `event_frequency`. The Parameter Selection Component thereby changes the respective `emikatParameters` props of the wrapped components. These props are used to parameterise the API template URL.
 
+![image](https://user-images.githubusercontent.com/1788226/88928088-aa1a9a00-d278-11ea-99f3-9ce9a2c1796d.png)
+
 ### Specialised Tables
 
 Specialised Tables that implement some custom formatting of row values and custom selection of columns (not all of them are interesting for end users) are: 
 
+#### [CharacteriseHazardTable](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/CharacteriseHazardTable.js)
 
-### Exposure Table
+[CharacteriseHazardTable](https://csis-dev.myclimateservice.eu/apps/simple-table-component/build/CharacteriseHazardTable/?host=https://csis-dev.myclimateservice.eu&study_uuid=3d8327f4-c47f-4c9e-bbc3-fb9018ea9607&study_area=POLYGON((23.555632%2046.059224,23.555632%2046.085305,23.60095%2046.085305,23.60095%2046.059224,23.555632%2046.059224))&emikat_id=3209&datapackage_uuid=2434ce93-93d4-4ca2-8618-a2de768d3f16&time_period=Baseline&emissions_scenario=Baseline&event_frequency=Frequent) for reference Study "[Advanced Screening Alba Iulia](https://csis-dev.myclimateservice.eu/study/33)" (CSIS ID: 33, EMIKAT ID: 3209):
+
+![image](https://user-images.githubusercontent.com/1788226/88927322-89057980-d277-11ea-82ac-e9578ffbf200.png)
+
+#### [HazardLocalEffectsTable](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/HazardLocalEffectsTable.js)
+
+[CharacteriseHazardTable](https://csis-dev.myclimateservice.eu/apps/simple-table-component/build/HazardLocalEffectsTable/?host=https://csis-dev.myclimateservice.eu&study_uuid=3d8327f4-c47f-4c9e-bbc3-fb9018ea9607&study_area=POLYGON((23.555632%2046.059224,23.555632%2046.085305,23.60095%2046.085305,23.60095%2046.059224,23.555632%2046.059224))&emikat_id=3209&datapackage_uuid=2434ce93-93d4-4ca2-8618-a2de768d3f16&time_period=Baseline&emissions_scenario=Baseline&event_frequency=Frequent) for reference Study "[Advanced Screening Alba Iulia](https://csis-dev.myclimateservice.eu/study/33)" (CSIS ID: 33, EMIKAT ID: 3209):
+
+![image](https://user-images.githubusercontent.com/1788226/88927879-61fb7780-d278-11ea-8c99-d6452cfffbee.png)
+
+#### [ExposureTable](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/ExposureTable.js)
+
+[ExposureTable](https://csis-dev.myclimateservice.eu/apps/simple-table-component/build/ExposureTable/?host=https://csis-dev.myclimateservice.eu&study_uuid=3d8327f4-c47f-4c9e-bbc3-fb9018ea9607&study_area=POLYGON((23.555632%2046.059224,23.555632%2046.085305,23.60095%2046.085305,23.60095%2046.059224,23.555632%2046.059224))&emikat_id=3209&datapackage_uuid=2434ce93-93d4-4ca2-8618-a2de768d3f16&time_period=Baseline&emissions_scenario=Baseline&event_frequency=Frequent) for reference Study "[Advanced Screening Alba Iulia](https://csis-dev.myclimateservice.eu/study/33)" (CSIS ID: 33, EMIKAT ID: 3209):
+
+![image](https://user-images.githubusercontent.com/1788226/88927778-3aa4aa80-d278-11ea-8238-f035eb02397d.png)
+
+#### [RiskAndImpactTable](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/RiskAndImpactTable.js)
+
+[RiskAndImpactTable](https://csis-dev.myclimateservice.eu/apps/simple-table-component/build/RiskAndImpactTable/?host=https://csis-dev.myclimateservice.eu&study_uuid=3d8327f4-c47f-4c9e-bbc3-fb9018ea9607&study_area=POLYGON((23.555632%2046.059224,23.555632%2046.085305,23.60095%2046.085305,23.60095%2046.059224,23.555632%2046.059224))&emikat_id=3209&datapackage_uuid=2434ce93-93d4-4ca2-8618-a2de768d3f16&time_period=Baseline&emissions_scenario=Baseline&event_frequency=Frequent) for reference Study "[Advanced Screening Alba Iulia](https://csis-dev.myclimateservice.eu/study/33)" (CSIS ID: 33, EMIKAT ID: 3209):
+
+![image](https://user-images.githubusercontent.com/1788226/88921697-3fb12c00-d26f-11ea-9fc4-e6d796074151.png)
+
+#### [AdaptationOptionsAppraisalTable](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/AdaptationOptionsAppraisalTable.js)
+
+[AdaptationOptionsAppraisalTable](https://csis-dev.myclimateservice.eu/apps/simple-table-component/build/AdaptationOptionsAppraisalTable/?host=https://csis-dev.myclimateservice.eu&study_uuid=3d8327f4-c47f-4c9e-bbc3-fb9018ea9607&study_area=POLYGON((23.555632%2046.059224,23.555632%2046.085305,23.60095%2046.085305,23.60095%2046.059224,23.555632%2046.059224))&emikat_id=3209&datapackage_uuid=2434ce93-93d4-4ca2-8618-a2de768d3f16&time_period=Baseline&emissions_scenario=Baseline&event_frequency=Frequent) for reference Study "[Advanced Screening Alba Iulia](https://csis-dev.myclimateservice.eu/study/33)" (CSIS ID: 33, EMIKAT ID: 3209):
+
+![image](https://user-images.githubusercontent.com/1788226/88926864-ddf4c000-d276-11ea-903f-374bee50de0e.png)
+
+Same as RiskAndImpactTable. In addition shows also Adaptation Scenarios.
 
 ## Tests
 
@@ -83,13 +116,45 @@ Example URL for testing HazardLocalEffectsTable locally against study `3183` and
 
 `http://localhost:3000/HazardLocalEffectsTable/?host=https://csis-dev.myclimateservice.eu&study_uuid=9359e741-df40-4bcd-9faf-2093b499c65c&study_area=POLYGON%20((16.346111%2048.223997,%2016.346111%2048.238634,%2016.376667%2048.238634,%2016.376667%2048.223997,%2016.346111%2048.223997))&emikat_id=3183&datapackage_uuid=2434ce93-93d4-4ca2-8618-a2de768d3f16&time_period=Baseline&emissions_scenario=Baseline&event_frequency=Rare`
 
+## Installation
+
+### Development Environment
+
+The application has been bootstrapped with [create-react-app](https://github.com/facebook/create-react-app) and uses the built-in build process . Node **v12.x** and yarn **v1.x** has to be installed locally.
+
+### Building
+
+Building and installing the app is straightforward:
+
+```sh
+yarn install
+yarn build
+yarn test
+```
+
+The **dev** branch is automatically built on [cismet CI](https://ci.cismet.de/view/CLARITY/job/simple-table-component/) based on [this](https://github.com/clarity-h2020/simple-table-component/blob/dev/Jenkinsfile) pipeline definition. 
+
+## Upgrading 
+
+Dependencies can be easily upgraded with [npm-upgrade](https://www.npmjs.com/package/npm-upgrade):
+
+``npx npm-upgrade``
+
+The advantage over `yarn upgrade` is that that `package.json`is updated with the new dependency version.
+
 
 ## Usage
 
-Unless the the [Scenario Analysis Component](https://github.com/clarity-h2020/scenario-analysis), this component does not use [seamless.js](https://github.com/travist/seamless.js/) to communicate with the [CSIS Drupal System](https://csis.myclimateservice.eu/) when embedded as iFrame. Instead, it can be configured by query parameters. Main reasons are that bidirectional communication between iFrame and main site are not required and that query parameters allow the app to be tested indepedently of the 
+Unless the [Scenario Analysis Component](https://github.com/clarity-h2020/scenario-analysis), this component does not use [seamless.js](https://github.com/travist/seamless.js/) to communicate with the [CSIS Drupal System](https://csis.myclimateservice.eu/) when embedded as iFrame. Instead, it can be configured by query parameters. Main reasons are that bidirectional communication between iFrame and main site are not required and that query parameters allow the app to be tested independently of CSIS.
 
-They can be selected by by the respctive route, e.g. 
+The different tables are selected by the corresponding route, e.g. `/AdaptationOptionsAppraisalTable` for the AdaptationOptionsAppraisalTable. The query parameters supported by the table are:
 
-query parameters are translated in to props.
+- 
+
+Query parameters are mapped to respective props in [App.js](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/App.js).
 
 For more information refer to [GenericEmikatClient.propTypes](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/commons/GenericEmikatClient.js#L97), [ParameterSelectionComponent.propTypes](https://github.com/clarity-h2020/simple-table-component/blob/dev/src/components/commons/ParameterSelectionComponent.js#L158) and 
+
+## License
+ 
+MIT © [cismet GmbH](https://github.com/cismet)
