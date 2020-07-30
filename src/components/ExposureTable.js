@@ -37,7 +37,7 @@ const ExposureTable = (props) => {
   const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/${emikatView}/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}&filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID}`;
 
   const columns =
-		'&column=GRID_ID&column=POPULATION_TOTAL';
+		'&column=GRID_ID&column=POPULATION_TOTAL&column=ROADS_M2&column=RESIDENTIAL_BUILDINGS_M2&column=NON_RESIDENTIAL_BUILDINGS_M2';
 
   return (
     <ParameterSelectionComponent
