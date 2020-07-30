@@ -12,7 +12,6 @@ import GenericEmikatTable from './commons/GenericEmikatTable.js';
  * EMIKAT API URL is hardcoded and not loaded from Data Package since EMIKAT Resources are not updated anyway
  * and table views  do not change. See ${emikatTemplateUrl}.
  * 
- * Test with emikat_id=2846
  * 
  * @param {*} props 
  * @see https://github.com/clarity-h2020/emikat/issues/9
@@ -25,7 +24,9 @@ const CharacteriseHazardTable = (props) => {
 	 */
   const emikatView = 'tab.CLY_HAZARD_EVENTS_STUDY.2036';
   
-  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/${emikatView}/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}&filter=SZ_ID=${EMIKATHelpers.EMIKAT_STUDY_ID}&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
+  // WARNING, Inconsistent behaviour: request will **fail** if SZ_ID filter is applied. 
+  // see https://github.com/clarity-h2020/simple-table-component/issues/18#issuecomment-666326858
+  const emikatTemplateUrl = `https://service.emikat.at/EmiKatTst/api/scenarios/${EMIKATHelpers.EMIKAT_STUDY_ID}/feature/${emikatView}/table/${EMIKATHelpers.DATA_FORMAT}?rownum=${EMIKATHelpers.ROWNUM}&filter=TIME_PERIOD%3D%27${EMIKATHelpers.TIME_PERIOD}%27&filter=EMISSIONS_SCENARIO%3D%27${EMIKATHelpers.EMISSIONS_SCENARIO}%27&filter=EVENT_FREQUENCY%3D%27${EMIKATHelpers.EVENT_FREQUENCY}%27`;
 
   // `Hazard Event Type ID` - Column names with whitespaces :-(
   // urban_area & country - should be 'consolidated (#13) but it isn't working anyway (https://github.com/clarity-h2020/emikat/issues/40) -> YAGNI. remove it!
