@@ -3,7 +3,7 @@ Simple Table Component [![DOI](https://zenodo.org/badge/199877837.svg)](https://
 
 ## Description
 
-The **Simple** Table Component visualise tabular data directly received from [EMIKAT API](https://service.emikat.at/EmiKatTst/swagger/index.html). It visualises the data “as-is”, which means, it does not perform any aggregation in contrast to the now deprecated [Table Component](https://github.com/clarity-h2020/table-components) which used to access the now deprecated [table-state-rest-api](https://github.com/clarity-h2020/table-state-rest-api).
+The **Simple** Table Component visualises tabular data directly received from [EMIKAT API](https://service.emikat.at/EmiKatTst/swagger/index.html). It visualises the data “as-is”, which means, it does not perform any aggregation in contrast to the now deprecated [Table Component](https://github.com/clarity-h2020/table-components) which used to access the now deprecated [table-state-rest-api](https://github.com/clarity-h2020/table-state-rest-api).
  
 ## Implementation 
 
